@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "keydrop",
   "version": "1.0.0",
   "description": "Turn your .env into one deployable key",

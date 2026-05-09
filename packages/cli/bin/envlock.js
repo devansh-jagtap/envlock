@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 import { program } from "commander";
 import { pushCommand } from "../src/commands/push.js";
 import { pullCommand } from "../src/commands/pull.js";
@@ -15,7 +15,7 @@ program
 
 program
   .command("pull")
-  .description("Retrieve your secrets using KEYDROP_KEY from .env")
+  .description("Retrieve .env secrets using KEYDROP_KEY")
   .action(pullCommand);
 
 program.parse();
