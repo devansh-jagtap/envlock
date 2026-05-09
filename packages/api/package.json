@@ -1,11 +1,13 @@
 {
   "name": "envlock-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-     "dev": "nodemon --exec \"node --env-file=.env src/index.js\" src/",
-  "start": "node --env-file=.env src/index.js"
+    "dev": "nodemon --exec \"node --env-file=.env src/index.js\" src/",
+    "start": "node src/index.js",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +26,5 @@
   "devDependencies": {
     "nodemon": "^3.1.14",
     "tsx": "^4.21.0"
-  },
-  "type": "module"
+  }
 }
