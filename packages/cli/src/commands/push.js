@@ -36,10 +36,10 @@ export async function pushCommand() {
     process.exit(1);
   }
 
-  // 4. Rewrite .env with only ENVLOCK_KEY
-  fs.writeFileSync(envPath, `ENVLOCK_KEY=${projectKey}\n`, "utf-8");
+  // 4. Rewrite .env with only KEYDROP_KEY
+  fs.writeFileSync(envPath, `KEYDROP_KEY=${projectKey}\n`, "utf-8");
 
   console.log(` Done! Your .env is now:`);
-  console.log(`\n   ENVLOCK_KEY=${projectKey}\n`);
+  console.log(`\n   KEYDROP_KEY=${projectKey}\n`);
   console.log(`Deploy with just this key. Your app will work normally.`);
 }

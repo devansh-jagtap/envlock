@@ -1,1 +1,14 @@
-{}
+{
+  "name": "keydrop",
+  "version": "1.0.0",
+  "description": "Turn your .env into one deployable key",
+  "type": "module",
+  "main": "./src/init.js",
+  "exports": {
+    ".": "./src/init.js",
+    "./init": "./src/init.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}

@@ -29,7 +29,9 @@ export async function pullCommand(options) {
   // 2. Fetch secrets from backend
   let secrets;
   try {
-    const res = await axios.get(`${API_URL}/secrets/${projectKey}`);
+    const res = await axios.get(`${API_URL}/secrets`, {
+      headers: { Authorization: `Bearer ${projectKey}` },
+    });
     secrets = res.data.secrets;
   } catch (err) {
     console.error(
