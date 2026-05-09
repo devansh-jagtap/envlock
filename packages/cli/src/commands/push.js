@@ -3,7 +3,7 @@ import path from "path";
 import dotenv from "dotenv";
 import axios from "axios";
 
-const API_URL = process.env.KEYDROP_API_URL || "http://localhost:3001";
+const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-production-d38c.up.railway.app";
 
 export async function pushCommand() {
   const envPath = path.resolve(process.cwd(), ".env");

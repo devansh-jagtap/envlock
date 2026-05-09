@@ -1,6 +1,6 @@
 {
   "name": "keydrop-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Turn your .env into one deployable key",
   "type": "module",
   "bin": {

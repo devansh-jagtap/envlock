@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = process.env.KEYDROP_API_URL || "http://localhost:3001";
+const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-production-d38c.up.railway.app";
 const KEYDROP_KEY = process.env.KEYDROP_KEY;
 
 if (!KEYDROP_KEY) {
