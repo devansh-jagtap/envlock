@@ -19,10 +19,10 @@ This website is built with Next.js App Router, Tailwind CSS v4, and reusable sha
 
 ## Where to edit
 
-- `/home/runner/work/keydrop/keydrop/website/app/page.tsx` — page structure (navbar, sections, footer)
-- `/home/runner/work/keydrop/keydrop/website/app/layout.tsx` — metadata and theme-init script
-- `/home/runner/work/keydrop/keydrop/website/components/ui` — reusable card/button UI blocks
-- `/home/runner/work/keydrop/keydrop/website/components/theme-toggle.tsx` — theme toggle behavior
+- `app/page.tsx` — page structure (navbar, sections, footer)
+- `app/layout.tsx` — metadata and theme-init script
+- `components/ui` — reusable card/button UI blocks
+- `components/theme-toggle.tsx` — theme toggle behavior
 
 ## Run locally
 
