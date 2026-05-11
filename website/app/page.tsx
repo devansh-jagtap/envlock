@@ -1,9 +1,175 @@
-import Image from "next/image";
+import { ThemeToggleShell } from "@/components/theme-toggle-shell";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+const steps = [
+  {
+    title: "Install CLI and SDK",
+    description: "Install KeyDrop packages in your project and environment once.",
+    detail: "Use keydrop-cli to push secrets and keydrop runtime to inject values at startup.",
+  },
+  {
+    title: "Push your .env securely",
+    description: "Run keydrop push to encrypt and upload your environment variables.",
+    detail: "Your local setup is converted into a single deployable project key.",
+  },
+  {
+    title: "Deploy with one key",
+    description: "Set only KEYDROP_KEY in any target platform.",
+    detail: "At runtime, KeyDrop decrypts and injects secrets into process.env automatically.",
+  },
+];
+
+const features = [
+  "Clean deployment flow across local, CI, staging, and production",
+  "AES-256-GCM encrypted payload storage",
+  "Single-key onboarding for teams and environments",
+  "Works with existing application code without refactors",
+];
 
 export default function Home() {
   return (
-    <div>
-    <h1>Hello World</h1>
-    </div>
+    <main className="relative min-h-screen overflow-hidden bg-background text-foreground">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,theme(colors.primary/0.15),transparent_60%)]" />
+
+      <div className="relative mx-auto flex w-full max-w-6xl flex-col px-6 py-6 md:px-10 md:py-8">
+        <nav className="sticky top-4 z-20 mb-10 flex items-center justify-between rounded-2xl border border-border/80 bg-card/85 px-4 py-3 backdrop-blur">
+          <div className="flex items-center gap-3">
+            <p className="text-sm font-semibold tracking-wide">KeyDrop</p>
+            <span className="hidden text-xs text-muted-foreground md:inline">Secure secret delivery</span>
+          </div>
+
+          <div className="hidden items-center gap-5 text-sm text-muted-foreground md:flex">
+            <a href="#overview" className="transition-colors hover:text-foreground">
+              Overview
+            </a>
+            <a href="#setup-steps" className="transition-colors hover:text-foreground">
+              Steps
+            </a>
+            <a href="#docs" className="transition-colors hover:text-foreground">
+              Docs
+            </a>
+          </div>
+
+          <ThemeToggleShell />
+        </nav>
+
+        <div className="flex flex-col gap-16 pb-10">
+          <header id="overview" className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">KeyDrop</p>
+              <h1 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">
+                Secure environment management with one deployable key
+              </h1>
+            </div>
+          </header>
+
+          <section className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+            <Card className="border-primary/30">
+              <CardHeader>
+                <CardTitle>Modern secret workflow</CardTitle>
+                <CardDescription>
+                  Replace manual .env distribution with a secure and consistent KeyDrop pipeline.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-wrap gap-3">
+                <Button href="#setup-steps">Get Started</Button>
+                <Button variant="outline" href="https://github.com/devansh-jagtap/keydrop#readme" target="_blank">
+                  Read Documentation
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>At a glance</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  {features.map((feature) => (
+                    <li key={feature} className="rounded-md bg-muted/60 p-3">
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </section>
+
+          <section id="setup-steps">
+            <h2 className="text-2xl font-semibold tracking-tight">Setup steps</h2>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+              Follow these steps to move from scattered secrets to a clean deployment-ready setup.
+            </p>
+            <div className="mt-6 grid gap-5 md:grid-cols-3">
+              {steps.map((step, index) => (
+                <Card key={step.title}>
+                  <CardHeader>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Step {index + 1}</p>
+                    <CardTitle>{step.title}</CardTitle>
+                    <CardDescription>{step.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">{step.detail}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+
+          <section id="docs" className="grid gap-5 md:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Documentation flow</CardTitle>
+                <CardDescription>How to use this page and project documentation quickly.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ol className="space-y-3 text-sm text-muted-foreground">
+                  <li>Open the Overview and Steps sections from the navigation bar.</li>
+                  <li>Use Read Documentation to jump to the full project guide on GitHub.</li>
+                  <li>Use the theme switch in the navbar to toggle light and dark modes.</li>
+                </ol>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Developer notes</CardTitle>
+                <CardDescription>Quick references for working on this website.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-3 text-sm text-muted-foreground">
+                  <li>Main page layout and sections: app/page.tsx</li>
+                  <li>Theme and initial mode script: app/layout.tsx</li>
+                  <li>Reusable UI blocks: components/ui</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </section>
+
+          <footer className="rounded-2xl border border-border/80 bg-card/80 px-6 py-5 text-sm text-muted-foreground">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <p>© {new Date().getFullYear()} KeyDrop. Built for secure secret management.</p>
+              <div className="flex items-center gap-4">
+                <a className="transition-colors hover:text-foreground" href="#overview">
+                  Top
+                </a>
+                <a className="transition-colors hover:text-foreground" href="#docs">
+                  Docs
+                </a>
+                <a
+                  className="transition-colors hover:text-foreground"
+                  href="https://github.com/devansh-jagtap/keydrop"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </main>
   );
 }
