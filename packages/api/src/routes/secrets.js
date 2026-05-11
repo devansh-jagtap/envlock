@@ -23,6 +23,35 @@ router.post("/upload", async (req, res) => {
 
   return res.json({ projectKey });
 });
+// PUT /upload — update existing project secrets
+router.put("/upload", async (req, res) => {
+  const { secrets } = req.body;
+  const authHeader = req.headers["authorization"];
+  const projectKey = authHeader?.replace("Bearer ", "");
+
+  if (!projectKey) {
+    return res.status(401).json({ message: "Missing KEYDROP_KEY" });
+  }
+
+  if (!secrets || typeof secrets !== "object") {
+    return res.status(400).json({ message: "Invalid secrets payload" });
+  }
+
+  const project = await prisma.project.findUnique({ where: { projectKey } });
+
+  if (!project) {
+    return res.status(404).json({ message: "Project not found" });
+  }
+
+  const encryptedData = encrypt(JSON.stringify(secrets));
+
+  await prisma.project.update({
+    where: { projectKey },
+    data: { encryptedData },
+  });
+
+  return res.json({ projectKey });
+});
 
 // GET /secrets — SDK fetches secrets using ENVLOCK_KEY
 router.get("/secrets", async (req, res) => {
