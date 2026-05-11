@@ -30,9 +30,18 @@ export function Button(props: ButtonProps) {
   const resolvedClassName = cn(baseClassName, variants[variant], className);
 
   if ("href" in props) {
-    const rel = props.target === "_blank" ? props.rel ?? "noopener noreferrer" : props.rel;
-    return <a className={resolvedClassName} {...props} rel={rel} />;
+    const {
+      className: _className,
+      variant: _variant,
+      rel,
+      target,
+      ...anchorProps
+    } = props;
+    const resolvedRel = target === "_blank" ? rel ?? "noopener noreferrer" : rel;
+
+    return <a {...anchorProps} target={target} rel={resolvedRel} className={resolvedClassName} />;
   }
 
-  return <button className={resolvedClassName} {...props} />;
+  const { className: _className, variant: _variant, ...buttonProps } = props;
+  return <button {...buttonProps} className={resolvedClassName} />;
 }
