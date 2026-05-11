@@ -9,7 +9,7 @@ export async function pushCommand() {
   const envPath = path.resolve(process.cwd(), ".env");
 
   if (!fs.existsSync(envPath)) {
-    console.error("❌ No .env file found in current directory.");
+    console.error(" No .env file found in current directory.");
     process.exit(1);
   }
 
@@ -17,7 +17,7 @@ export async function pushCommand() {
   const parsed = dotenv.parse(raw);
 
   if (Object.keys(parsed).length === 0) {
-    console.error("❌ .env file is empty or invalid.");
+    console.error(" .env file is empty or invalid.");
     process.exit(1);
   }
 

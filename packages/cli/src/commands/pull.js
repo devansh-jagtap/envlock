@@ -9,7 +9,7 @@ export async function pullCommand(options) {
 
   // 1. Read current .env to get KEYDROP_KEY
   if (!fs.existsSync(envPath)) {
-    console.error("❌ No .env file found in current directory.");
+    console.error("No .env file found in current directory.");
     process.exit(1);
   }
 
@@ -24,7 +24,7 @@ export async function pullCommand(options) {
 
   const projectKey = keyMatch[1].trim();
 
-  console.log(`🔍 Retrieving secrets for key: ${projectKey}...`);
+  console.log(` Retrieving secrets for key: ${projectKey}...`);
 
   // 2. Fetch secrets from backend
   let secrets;
