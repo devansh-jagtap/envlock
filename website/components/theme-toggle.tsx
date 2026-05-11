@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 
-const THEME_KEY = "keydrop-theme";
+export const THEME_KEY = "keydrop-theme";
 
 type Theme = "light" | "dark";
 
