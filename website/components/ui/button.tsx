@@ -1,12 +1,19 @@
-import type { ButtonHTMLAttributes } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
 type ButtonVariant = "default" | "outline";
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+type CommonButtonProps = {
+  className?: string;
   variant?: ButtonVariant;
+  children: ReactNode;
 };
+
+type NativeButtonProps = CommonButtonProps & ButtonHTMLAttributes<HTMLButtonElement>;
+type AnchorButtonProps = CommonButtonProps & AnchorHTMLAttributes<HTMLAnchorElement> & { href: string };
+
+type ButtonProps = NativeButtonProps | AnchorButtonProps;
 
 const variants: Record<ButtonVariant, string> = {
   default:
@@ -15,15 +22,17 @@ const variants: Record<ButtonVariant, string> = {
     "border border-border bg-transparent text-foreground hover:bg-muted focus-visible:outline-ring",
 };
 
-export function Button({ className, variant = "default", ...props }: ButtonProps) {
-  return (
-    <button
-      className={cn(
-        "inline-flex h-10 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-60",
-        variants[variant],
-        className,
-      )}
-      {...props}
-    />
-  );
+const baseClassName =
+  "inline-flex h-10 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-60";
+
+export function Button(props: ButtonProps) {
+  const { className, variant = "default" } = props;
+  const resolvedClassName = cn(baseClassName, variants[variant], className);
+
+  if ("href" in props) {
+    const rel = props.target === "_blank" ? props.rel ?? "noopener noreferrer" : props.rel;
+    return <a className={resolvedClassName} {...props} rel={rel} />;
+  }
+
+  return <button className={resolvedClassName} {...props} />;
 }

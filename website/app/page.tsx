@@ -1,4 +1,4 @@
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggleShell } from "@/components/theme-toggle-shell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -32,12 +32,12 @@ export default function Home() {
     <main className="relative min-h-screen overflow-hidden bg-background text-foreground">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,theme(colors.primary/0.15),transparent_60%)]" />
       <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 py-10 md:px-10 md:py-14">
-        <header className="flex items-center justify-between">
+        <header className="flex items-center justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">KeyDrop</p>
             <h1 className="mt-3 text-4xl font-bold tracking-tight md:text-5xl">Secure environment management with one deployable key</h1>
           </div>
-          <ThemeToggle />
+          <ThemeToggleShell />
         </header>
 
         <section className="grid gap-6 lg:grid-cols-[2fr_1fr]">
@@ -49,8 +49,10 @@ export default function Home() {
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-3">
-              <Button>Get Started</Button>
-              <Button variant="outline">Read Documentation</Button>
+              <Button href="#setup-steps">Get Started</Button>
+              <Button variant="outline" href="https://github.com/devansh-jagtap/keydrop#readme">
+                Read Documentation
+              </Button>
             </CardContent>
           </Card>
 
@@ -70,7 +72,7 @@ export default function Home() {
           </Card>
         </section>
 
-        <section>
+        <section id="setup-steps">
           <h2 className="text-2xl font-semibold tracking-tight">Setup steps</h2>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
             Follow these steps to move from scattered secrets to a clean deployment-ready setup.
