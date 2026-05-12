@@ -44,8 +44,10 @@ export async function pushCommand() {
         headers: { Authorization: `Bearer ${existingKey}` },
       });
       projectKey = res.data.projectKey;
-      console.log(`Secrets updated successfully!`);
+      fs.writeFileSync(envPath, `KEYDROP_KEY=${projectKey}\n`, "utf-8"); // ✅ rewrite
+      console.log(`✅ Secrets updated! Your .env is now:`);
       console.log(`\n   KEYDROP_KEY=${projectKey}\n`);
+      console.log(`Your secrets have been updated in the vault.`);
     } else {
       // CREATE new project
       const res = await axios.post(`${API_URL}/upload`, { secrets });
