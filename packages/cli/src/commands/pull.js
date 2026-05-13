@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import axios from "axios";
 
-const API_URL = process.env.KEYDROP_API_URL || "http://localhost:3001";
+const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-production-d38c.up.railway.app"; 
 
 export async function pullCommand(options) {
   const envPath = path.resolve(process.cwd(), ".env");
@@ -41,14 +41,15 @@ export async function pullCommand(options) {
     process.exit(1);
   }
 
-  // 3. Reconstruct .env file
-  let envContent = "";
-  for (const [key, value] of Object.entries(secrets)) {
-    envContent += `${key}=${value}\n`;
-  }
+ // 3. Reconstruct .env file — always keep KEYDROP_KEY at top
+let envContent = `KEYDROP_KEY=${projectKey}\n`;
+for (const [key, value] of Object.entries(secrets)) {
+  envContent += `${key}=${value}\n`;
+}
 
-  fs.writeFileSync(envPath, envContent, "utf-8");
+fs.writeFileSync(envPath, envContent, "utf-8");
 
-  console.log(` Secrets restored! Your .env now contains:`);
-  console.log(`\n${Object.keys(secrets).join(", ")}\n`);
+console.log(`Secrets restored! Your .env now contains:`);
+console.log(`\n${Object.keys(secrets).join(", ")}\n`);
+console.log(`KEYDROP_KEY has been kept in your .env file.`);
 }

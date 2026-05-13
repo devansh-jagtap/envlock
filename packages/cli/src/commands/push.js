@@ -29,7 +29,7 @@ export async function pushCommand() {
   delete secrets.KEYDROP_KEY;
 
   if (Object.keys(secrets).length === 0) {
-    console.error(" No secrets found — only KEYDROP_KEY exists in .env.");
+    console.error(" No secrets found only KEYDROP_KEY exists in .env.");
     process.exit(1);
   }
 

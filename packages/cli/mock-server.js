@@ -46,8 +46,8 @@ app.get("/health", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Mock ENVLOCK API server running on http://localhost:${PORT}`);
-  console.log(`📝 POST /upload - Upload .env secrets`);
-  console.log(`📖 GET /secrets/:projectKey - Retrieve secrets (testing only)`);
-  console.log(`💚 GET /health - Health check`);
+  console.log(` Mock ENVLOCK API server running on http://localhost:${PORT}`);
+  console.log(` POST /upload - Upload .env secrets`);
+  console.log(` GET /secrets/:projectKey - Retrieve secrets (testing only)`);
+  console.log(`GET /health - Health check`);
 });
