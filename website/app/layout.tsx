@@ -2,18 +2,15 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "KeyDrop | Secure Secret Delivery",
-  description: "KeyDrop turns your environment secrets into one secure deployable key for modern applications.",
+  title: "KeyDrop — One key for all your secrets",
+  description: "Turn your entire .env file into one secure deployable key.",
 };
 
 const themeInitScript = `
 (() => {
   try {
     const savedTheme = localStorage.getItem("keydrop-theme");
-    const isDark = savedTheme
-      ? savedTheme === "dark"
-      : window.matchMedia("(prefers-color-scheme: dark)").matches;
-
+    const isDark = savedTheme ? savedTheme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
     document.documentElement.classList.toggle("dark", isDark);
   } catch {
     document.documentElement.classList.remove("dark");
@@ -21,18 +18,16 @@ const themeInitScript = `
 })();
 `;
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+    <html lang="en" className="h-full" suppressHydrationWarning>
       <head>
-        {/* Static inline script sets theme class before first paint using local storage and media query during initialization. */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
       </head>
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full antialiased">{children}</body>
     </html>
   );
 }
