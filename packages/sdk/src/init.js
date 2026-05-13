@@ -2,8 +2,7 @@ import axios from "axios";
 
 const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-production-d38c.up.railway.app";
 
-// named export for Next.js and other bundlers
-export async function initKeydrop() {
+(async () => {
   const KEYDROP_KEY = process.env.KEYDROP_KEY;
 
   if (!KEYDROP_KEY) {
@@ -17,31 +16,10 @@ export async function initKeydrop() {
     });
 
     const secrets = res.data.secrets;
-
-    for (const [key, value] of Object.entries(secrets)) {
-      process.env[key] = value;
-    }
+    Object.assign(process.env, secrets);
 
     console.log(`[KeyDrop] Injected ${Object.keys(secrets).length} secret(s)`);
   } catch (err) {
-    console.error("[KeyDrop]  Failed to fetch secrets:", err instanceof Error ? err.message : String(err));
-    throw err;
+    console.error("[KeyDrop] Failed to fetch secrets:", err instanceof Error ? err.message : String(err));
   }
-}
-
-// keep top-level await for plain Node.js scripts
-const KEYDROP_KEY = process.env.KEYDROP_KEY;
-
-if (KEYDROP_KEY) {
-  const res = await axios.get(`${API_URL}/secrets`, {
-    headers: { Authorization: `Bearer ${KEYDROP_KEY}` },
-  });
-
-  const secrets = res.data.secrets;
-
-  for (const [key, value] of Object.entries(secrets)) {
-    process.env[key] = value;
-  }
-
-  console.log(`[KeyDrop] Injected ${Object.keys(secrets).length} secret(s)`);
-}
+})();
