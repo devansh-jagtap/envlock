@@ -45,7 +45,7 @@ export async function pushCommand() {
       });
       projectKey = res.data.projectKey;
       fs.writeFileSync(envPath, `KEYDROP_KEY=${projectKey}\n`, "utf-8"); // ✅ rewrite
-      console.log(`✅ Secrets updated! Your .env is now:`);
+      console.log(` Secrets updated! Your .env is now:`);
       console.log(`\n   KEYDROP_KEY=${projectKey}\n`);
       console.log(`Your secrets have been updated in the vault.`);
     } else {

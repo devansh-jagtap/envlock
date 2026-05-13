@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --font-mono: var(--font-inconsolata);
+}
+
 :root {
   --bg: #080808;
   --bg-secondary: #101010;
@@ -13,7 +17,8 @@
   --accent-dim: rgba(34, 211, 165, 0.07);
   --accent-glow: rgba(34, 211, 165, 0.12);
   --font-sans: "Space Grotesk", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-mono: var(--font-inconsolata);
+  --font-mono-custom: var(--font-inconsolata);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
