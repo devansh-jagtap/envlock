@@ -5,14 +5,19 @@
   "type": "module",
   "main": "./src/init.js",
   "types": "./src/init.d.ts",
+  "sideEffects": [
+    "./src/init.js"
+  ],
   "exports": {
     ".": {
       "import": "./src/init.js",
-      "types": "./src/init.d.ts"
+      "types": "./src/init.d.ts",
+      "default": "./src/init.js"
     },
     "./init": {
       "import": "./src/init.js",
-      "types": "./src/init.d.ts"
+      "types": "./src/init.d.ts",
+      "default": "./src/init.js"
     }
   },
   "dependencies": {

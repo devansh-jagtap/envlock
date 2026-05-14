@@ -17,7 +17,7 @@ const steps = [
   },
   {
     number: "03",
-    command: 'await import("keydrop/init")',
+    command: 'import "keydrop/init"',
     title: "Deploy",
     description: "Add one line to your app. Deploy with only KEYDROP_KEY. Everything works.",
   },

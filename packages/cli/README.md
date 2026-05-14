@@ -62,7 +62,7 @@ KEYDROP_KEY=proj_x82js8sh
 Add one line to your app:
 
 ```js
-await import("keydrop/init");
+import "keydrop/init";
 ```
 
 Then deploy with only `KEYDROP_KEY` in your environment.

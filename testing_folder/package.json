@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "KEYDROP_KEY=proj_527f8664d5737657 KEYDROP_API_URL=http://localhost:3001 node index.js"
   },
   "type": "module",
   "keywords": [],

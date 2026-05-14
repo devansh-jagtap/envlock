@@ -3,7 +3,7 @@
 const commands = [
   { label: "Install SDK + CLI", code: "npm install keydrop && npm install -g keydrop-cli" },
   { label: "Push your secrets", code: "keydrop push" },
-  { label: "Add to your app", code: 'await import("keydrop/init");' },
+  { label: "Add to your app", code: 'import "keydrop/init";' },
   { label: "Deploy with one key", code: "KEYDROP_KEY=proj_xxx  ← set this in Vercel/Railway" },
 ];
 
