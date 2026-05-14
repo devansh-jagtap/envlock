@@ -78,10 +78,39 @@ KEYDROP_KEY=proj_x82js8sh
 
 ## 2. Initialize KeyDrop in Your App
 
-Add one line at the top of your app entrypoint:
+### For Next.js
+
+1. Install the latest SDK:
+
+```bash
+npm install keydrop@latest
+```
+
+2. Create `instrumentation.ts` in your project root (same level as `package.json`):
+
+```ts
+export async function register() {
+  const { init } = await import("keydrop");
+  await init();
+}
+```
+
+### For Node.js
+
+1. Install the latest SDK:
+
+```bash
+npm install keydrop@latest
+```
+
+2. In `index.js` or `server.js`, initialize KeyDrop in the first lines:
 
 ```js
-import "keydrop/init";
+import { init } from "keydrop";
+await init();
+
+// now start your server below
+const app = express();
 ```
 
 ---
@@ -110,7 +139,7 @@ process.env.STRIPE_SECRET_KEY
 ## Install
 
 ```bash
-npm install keydrop
+npm install keydrop@latest
 npm install -g keydrop-cli
 ```
 
@@ -126,8 +155,32 @@ keydrop push
 
 ## Add Runtime Initialization
 
+### Next.js
+
+```bash
+npm install keydrop@latest
+```
+
+Create `instrumentation.ts` in your project root:
+
+```ts
+export async function register() {
+  const { init } = await import("keydrop");
+  await init();
+}
+```
+
+### Node.js
+
+```bash
+npm install keydrop@latest
+```
+
+In `index.js` or `server.js`:
+
 ```js
-import "keydrop/init";
+import { init } from "keydrop";
+await init();
 ```
 
 ---
