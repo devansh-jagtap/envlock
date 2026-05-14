@@ -95,7 +95,7 @@ export async function register() {
 }
 ```
 
-> Note: `instrumentation.ts` is supported in Next.js 13.2+. If you are on an older setup, you may need to enable the instrumentation hook in `next.config.js`.
+> Note: If your Next.js setup does not detect `instrumentation.ts`, enable the instrumentation hook in `next.config.js`:
 
 ```js
 // next.config.js
@@ -193,7 +193,7 @@ export async function register() {
 }
 ```
 
-> Note: `instrumentation.ts` is supported in Next.js 13.2+. If you are on an older setup, you may need to enable the instrumentation hook in `next.config.js`.
+> Note: If your Next.js setup does not detect `instrumentation.ts`, enable the instrumentation hook in `next.config.js`:
 
 ```js
 // next.config.js
