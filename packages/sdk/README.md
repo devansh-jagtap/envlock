@@ -13,7 +13,7 @@ npm install keydrop
 Add one line at the very top of your app entry point:
 
 ```js
-await import("keydrop/init");
+import "keydrop/init";
 ```
 
 That's it. All your secrets are now available via `process.env` as normal.
@@ -38,7 +38,7 @@ npx keydrop-cli push
 
 ```js
 // index.js
-await import("keydrop/init");
+import "keydrop/init";
 
 // works exactly as before — no changes needed
 const db = mongoose.connect(process.env.MONGO_URI);

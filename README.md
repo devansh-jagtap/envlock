@@ -81,7 +81,7 @@ KEYDROP_KEY=proj_x82js8sh
 Add one line at the top of your app entrypoint:
 
 ```js
-await import("keydrop/init");
+import "keydrop/init";
 ```
 
 ---
@@ -127,7 +127,7 @@ keydrop push
 ## Add Runtime Initialization
 
 ```js
-await import("keydrop/init");
+import "keydrop/init";
 ```
 
 ---
