@@ -1,10 +1,12 @@
+"use strict";
+
 const API_URL =
   process.env.KEYDROP_API_URL ||
   "https://keydrop-production-d38c.up.railway.app";
 
 let _promise = null;
 
-export async function init() {
+async function init() {
   if (_promise) return _promise;
 
   _promise = (async () => {
@@ -25,7 +27,7 @@ export async function init() {
         });
         data = await res.json();
       } else {
-        const { default: axios } = await import("axios");
+        const axios = require("axios");
         const res = await axios.get(`${API_URL}/secrets`, {
           headers: { Authorization: `Bearer ${KEYDROP_KEY}` },
         });
@@ -48,4 +50,6 @@ export async function init() {
   return _promise;
 }
 
-export default init;
+module.exports = init;
+module.exports.init = init;
+module.exports.default = init;

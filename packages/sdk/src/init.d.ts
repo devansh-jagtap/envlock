@@ -1,3 +1,2 @@
-// Side-effect only module. Import for automatic secret injection.
-// import "keydrop/init";
-export {};
+export declare function init(): Promise<void>;
+export default init;
