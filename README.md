@@ -78,10 +78,62 @@ KEYDROP_KEY=proj_x82js8sh
 
 ## 2. Initialize KeyDrop in Your App
 
-Add one line at the top of your app entrypoint:
+### For Next.js
+
+1. Install the latest SDK:
+
+```bash
+npm install keydrop@latest
+```
+
+2. Create `instrumentation.ts` in your project root (same level as `package.json`):
+
+```ts
+export async function register() {
+  const { init } = await import("keydrop");
+  await init();
+}
+```
+
+> Note: If your Next.js setup does not detect `instrumentation.ts`, enable the instrumentation hook in `next.config.js`:
 
 ```js
-import "keydrop/init";
+// next.config.js
+module.exports = {
+  experimental: {
+    instrumentationHook: true,
+  },
+};
+```
+
+### For Node.js
+
+1. Install the latest SDK:
+
+```bash
+npm install keydrop@latest
+```
+
+2. In `index.js` or `server.js`, initialize KeyDrop in the first lines:
+
+```js
+import { init } from "keydrop";
+await init();
+
+// now start your server below
+const app = express();
+```
+
+If your runtime does not support top-level `await`, use an async IIFE:
+
+```js
+import { init } from "keydrop";
+
+(async () => {
+  await init();
+  const app = express();
+  app.listen(3000);
+})();
 ```
 
 ---
@@ -110,7 +162,7 @@ process.env.STRIPE_SECRET_KEY
 ## Install
 
 ```bash
-npm install keydrop
+npm install keydrop@latest
 npm install -g keydrop-cli
 ```
 
@@ -126,8 +178,55 @@ keydrop push
 
 ## Add Runtime Initialization
 
+### Next.js
+
+```bash
+npm install keydrop@latest
+```
+
+Create `instrumentation.ts` in your project root:
+
+```ts
+export async function register() {
+  const { init } = await import("keydrop");
+  await init();
+}
+```
+
+> Note: If your Next.js setup does not detect `instrumentation.ts`, enable the instrumentation hook in `next.config.js`:
+
 ```js
-import "keydrop/init";
+// next.config.js
+module.exports = {
+  experimental: {
+    instrumentationHook: true,
+  },
+};
+```
+
+### Node.js
+
+```bash
+npm install keydrop@latest
+```
+
+In `index.js` or `server.js`:
+
+```js
+import { init } from "keydrop";
+await init();
+```
+
+If top-level `await` is not supported in your setup, wrap startup in an async IIFE instead:
+
+```js
+import { init } from "keydrop";
+
+(async () => {
+  await init();
+  const app = express();
+  app.listen(3000);
+})();
 ```
 
 ---
