@@ -95,7 +95,7 @@ export async function register() {
 }
 ```
 
-> Note: `instrumentation.ts` is supported in modern Next.js versions. For older versions, you may need to enable the instrumentation hook in `next.config.js`.
+> Note: `instrumentation.ts` is supported in Next.js 13.2+ (including newer versions). If you are on an older setup, you may need to enable the instrumentation hook in `next.config.js`.
 
 ### For Node.js
 
@@ -123,6 +123,7 @@ import { init } from "keydrop";
 (async () => {
   await init();
   const app = express();
+  app.listen(3000);
 })();
 ```
 
@@ -183,7 +184,7 @@ export async function register() {
 }
 ```
 
-> Note: For older Next.js versions, you may need to enable the instrumentation hook in `next.config.js`.
+> Note: `instrumentation.ts` is supported in Next.js 13.2+ (including newer versions). If you are on an older setup, you may need to enable the instrumentation hook in `next.config.js`.
 
 ### Node.js
 
