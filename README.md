@@ -95,6 +95,8 @@ export async function register() {
 }
 ```
 
+> Note: `instrumentation.ts` is supported in modern Next.js versions. For older versions, you may need to enable the instrumentation hook in `next.config.js`.
+
 ### For Node.js
 
 1. Install the latest SDK:
@@ -111,6 +113,17 @@ await init();
 
 // now start your server below
 const app = express();
+```
+
+If your runtime does not support top-level `await`, use an async IIFE:
+
+```js
+import { init } from "keydrop";
+
+(async () => {
+  await init();
+  const app = express();
+})();
 ```
 
 ---
@@ -170,6 +183,8 @@ export async function register() {
 }
 ```
 
+> Note: For older Next.js versions, you may need to enable the instrumentation hook in `next.config.js`.
+
 ### Node.js
 
 ```bash
@@ -182,6 +197,8 @@ In `index.js` or `server.js`:
 import { init } from "keydrop";
 await init();
 ```
+
+If top-level `await` is not supported in your setup, wrap startup in an async IIFE instead.
 
 ---
 
