@@ -97,6 +97,15 @@ export async function register() {
 
 > Note: `instrumentation.ts` is supported in Next.js 13.2+. If you are on an older setup, you may need to enable the instrumentation hook in `next.config.js`.
 
+```js
+// next.config.js
+module.exports = {
+  experimental: {
+    instrumentationHook: true,
+  },
+};
+```
+
 ### For Node.js
 
 1. Install the latest SDK:
@@ -186,6 +195,15 @@ export async function register() {
 
 > Note: `instrumentation.ts` is supported in Next.js 13.2+. If you are on an older setup, you may need to enable the instrumentation hook in `next.config.js`.
 
+```js
+// next.config.js
+module.exports = {
+  experimental: {
+    instrumentationHook: true,
+  },
+};
+```
+
 ### Node.js
 
 ```bash
@@ -199,7 +217,17 @@ import { init } from "keydrop";
 await init();
 ```
 
-If top-level `await` is not supported in your setup, wrap startup in an async IIFE instead.
+If top-level `await` is not supported in your setup, wrap startup in an async IIFE instead:
+
+```js
+import { init } from "keydrop";
+
+(async () => {
+  await init();
+  const app = express();
+  app.listen(3000);
+})();
+```
 
 ---
 
