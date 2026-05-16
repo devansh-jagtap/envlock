@@ -6,7 +6,7 @@ import Footer from "@/components/landing/footer";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen overflow-hidden" style={{ background: "var(--bg)" }}>
+    <main className="relative min-h-screen overflow-hidden bg-[var(--bg)]">
       {/* ambient glow */}
       <div
         className="pointer-events-none fixed inset-0 z-0"

@@ -32,35 +32,16 @@ export default function Navbar() {
           boxShadow: scrolled ? "0 8px 40px rgba(0,0,0,0.5)" : "none",
         }}
       >
-        <Link
-          href="/"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            textDecoration: "none",
-          }}
-        >
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none" }}>
           <Image
             src="/svglogo.webp"
             alt="KeyDrop Logo"
             width={36}
             height={36}
             unoptimized
-            style={{
-              borderRadius: "6px",
-              filter: "invert(1)",
-              transform: "scale(2.0)",
-            }}
+            style={{ borderRadius: "6px", filter: "invert(1)", transform: "scale(2.0)" }}
           />
-          <span
-            style={{
-              fontSize: "14px",
-              fontWeight: "600",
-              color: "var(--text)",
-              fontFamily: "var(--font-sans)",
-            }}
-          >
+          <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--text)", fontFamily: "var(--font-sans)" }}>
             KeyDrop
           </span>
         </Link>
@@ -69,30 +50,16 @@ export default function Navbar() {
           {[
             { label: "How it works", href: "#how-it-works" },
             { label: "Install", href: "#install" },
-            {
-              label: "GitHub",
-              href: "https://github.com/devansh-jagtap/keydrop",
-              external: true,
-            },
+            { label: "GitHub", href: "https://github.com/devansh-jagtap/keydrop", external: true },
           ].map((item) => (
             <a
               key={item.label}
               href={item.href}
               target={item.external ? "_blank" : undefined}
               rel={item.external ? "noopener noreferrer" : undefined}
-              style={{
-                fontSize: "13px",
-                color: "var(--text-secondary)",
-                textDecoration: "none",
-                fontFamily: "var(--font-sans)",
-                transition: "color 0.2s",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "var(--text)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "var(--text-secondary)")
-              }
+              style={{ fontSize: "13px", color: "var(--text-secondary)", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "color 0.2s" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
             >
               {item.label}
             </a>
@@ -101,17 +68,7 @@ export default function Navbar() {
 
         <Link
           href="/dashboard"
-          style={{
-            fontSize: "13px",
-            fontWeight: "600",
-            padding: "7px 18px",
-            borderRadius: "9999px",
-            background: "var(--accent)",
-            color: "#080808",
-            textDecoration: "none",
-            fontFamily: "var(--font-sans)",
-            transition: "opacity 0.2s",
-          }}
+          style={{ fontSize: "13px", fontWeight: "600", padding: "7px 18px", borderRadius: "9999px", background: "var(--accent)", color: "#080808", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "opacity 0.2s" }}
           onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
           onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
         >

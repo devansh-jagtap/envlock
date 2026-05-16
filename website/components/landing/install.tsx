@@ -8,82 +8,29 @@ const installOptions = [
     title: "Node.js",
     subtitle: "Express, Fastify, Hono",
     icon: "/icons/nodedotjs.svg",
-
     commands: [
-      {
-        label: "Install SDK + CLI",
-        code: "npm install keydrop@latest && npm install -g keydrop-cli",
-      },
-
-      {
-        label: "Push your secrets",
-        code: "keydrop push",
-      },
-
-      {
-        label: "Initialize Keydrop",
-        code: 'import { init } from "keydrop";',
-      },
-
-      {
-        label: "Start runtime",
-        code: "await init();",
-      },
-
-      {
-        label: "If top-level await is unsupported",
-        code:
-          '(async () => { await init(); const app = express(); app.listen(3000); })();',
-      },
-
-      {
-        label: "Deploy anywhere",
-        code: "KEYDROP_KEY=proj_x82js8sh",
-      },
+      { label: "Install SDK + CLI", code: "npm install keydrop@latest && npm install -g keydrop-cli" },
+      { label: "Push your secrets", code: "keydrop push" },
+      { label: "Initialize Keydrop", code: 'import { init } from "keydrop";' },
+      { label: "Start runtime", code: "await init();" },
+      { label: "If top-level await is unsupported", code: "(async () => { await init(); const app = express(); app.listen(3000); })();" },
+      { label: "Deploy anywhere", code: "KEYDROP_KEY=proj_x82js8sh" },
     ],
   },
-
   {
     id: "next",
     title: "Next.js",
     subtitle: "App Router + instrumentation hook",
     icon: "/icons/nextdotjs.svg",
-
     commands: [
-      {
-        label: "Install SDK + CLI",
-        code: "npm install keydrop@latest && npm install -g keydrop-cli",
-      },
-
-      {
-        label: "Push your secrets",
-        code: "keydrop push",
-      },
-
-      {
-        label: "Create instrumentation.ts",
-        code: "project-root/instrumentation.ts",
-      },
-
-      {
-        label: "Initialize Keydrop",
-        code:
-          'export async function register() { const { init } = await import("keydrop"); await init(); }',
-      },
-
-      {
-        label: "Enable instrumentation hook if needed",
-        code:
-          'module.exports = { experimental: { instrumentationHook: true } }',
-      },
-
-      {
-        label: "Deploy anywhere",
-        code: "KEYDROP_KEY=proj_x82js8sh",
-      },
+      { label: "Install SDK + CLI", code: "npm install keydrop@latest && npm install -g keydrop-cli" },
+      { label: "Push your secrets", code: "keydrop push" },
+      { label: "Create instrumentation.ts", code: "project-root/instrumentation.ts" },
+      { label: "Initialize Keydrop", code: 'export async function register() { const { init } = await import("keydrop"); await init(); }' },
+      { label: "Enable instrumentation hook if needed", code: "module.exports = { experimental: { instrumentationHook: true } }" },
+      { label: "Deploy anywhere", code: "KEYDROP_KEY=proj_x82js8sh" },
     ],
   },
-
   {
     id: "coming-soon",
     title: "Coming soon",
@@ -99,29 +46,19 @@ export default function Install() {
     <>
       <section
         id="install"
-        style={{
-          padding: "0 24px 96px",
-          maxWidth: "1260px",
-          margin: "0 auto",
-        }}
+        style={{ padding: "0 24px 96px", maxWidth: "1260px", margin: "0 auto" }}
       >
         <div
           style={{
             borderRadius: "34px",
             padding: "52px 32px 44px",
-            background:
-              "linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.015))",
+            background: "linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.015))",
             border: "1px solid rgba(255,255,255,0.08)",
             boxShadow: "0 18px 80px rgba(0,0,0,0.35)",
           }}
         >
           {/* HEADING */}
-          <div
-            style={{
-              textAlign: "center",
-              marginBottom: "56px",
-            }}
-          >
+          <div style={{ textAlign: "center", marginBottom: "56px" }}>
             <p
               style={{
                 fontSize: "11px",
@@ -135,7 +72,6 @@ export default function Install() {
             >
               Get started
             </p>
-
             <h2
               style={{
                 fontSize: "clamp(2rem, 5vw, 3.25rem)",
@@ -148,9 +84,7 @@ export default function Install() {
             >
               Up and running
               <br />
-              <span style={{ color: "var(--text-muted)" }}>
-                in minutes.
-              </span>
+              <span style={{ color: "var(--text-muted)" }}>in minutes.</span>
             </h2>
           </div>
 
@@ -158,8 +92,7 @@ export default function Install() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns:
-                "repeat(auto-fit,minmax(250px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
               justifyContent: "center",
               gap: "18px",
             }}
@@ -170,9 +103,7 @@ export default function Install() {
                 type="button"
                 disabled={item.id === "coming-soon"}
                 onClick={() => {
-                  if (item.id !== "coming-soon") {
-                    setActiveInstall(item.id);
-                  }
+                  if (item.id !== "coming-soon") setActiveInstall(item.id);
                 }}
                 style={{
                   background:
@@ -182,38 +113,27 @@ export default function Install() {
                   border: "1px solid rgba(255,255,255,0.06)",
                   borderRadius: "30px",
                   padding: "28px 24px",
-                  cursor: "pointer",
+                  cursor: item.id === "coming-soon" ? "default" : "pointer",
                   textAlign: "center",
-                  transition:
-                    "transform 0.25s ease, border 0.25s ease, background 0.25s ease",
+                  transition: "transform 0.25s ease, border 0.25s ease, background 0.25s ease",
                   minHeight: "224px",
                   opacity: item.id === "coming-soon" ? 0.82 : 1,
                   boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)",
-
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
                 }}
                 onMouseEnter={(e) => {
-                  if (item.id === "coming-soon") {
-                    return;
-                  }
-                  e.currentTarget.style.border =
-                    "1px solid rgba(255,255,255,0.14)";
-                  e.currentTarget.style.transform =
-                    "translateY(-4px)";
-                  e.currentTarget.style.background =
-                    "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.028))";
+                  if (item.id === "coming-soon") return;
+                  e.currentTarget.style.border = "1px solid rgba(255,255,255,0.14)";
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.background = "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.028))";
                 }}
                 onMouseLeave={(e) => {
-                  if (item.id === "coming-soon") {
-                    return;
-                  }
-                  e.currentTarget.style.border =
-                    "1px solid rgba(255,255,255,0.06)";
-                  e.currentTarget.style.transform =
-                    "translateY(0px)";
+                  if (item.id === "coming-soon") return;
+                  e.currentTarget.style.border = "1px solid rgba(255,255,255,0.06)";
+                  e.currentTarget.style.transform = "translateY(0px)";
                   e.currentTarget.style.background =
                     item.id === "coming-soon"
                       ? "linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))"
@@ -233,17 +153,12 @@ export default function Install() {
                       alignItems: "center",
                       justifyContent: "center",
                       marginBottom: "22px",
-                      transition: "transform 0.25s ease",
                     }}
                   >
                     <img
                       src={item.icon}
                       alt={item.title}
-                      style={{
-                        width: "44px",
-                        height: "44px",
-                        objectFit: "contain",
-                      }}
+                      style={{ width: "44px", height: "44px", objectFit: "contain" }}
                     />
                   </div>
                 ) : (
@@ -269,7 +184,6 @@ export default function Install() {
                     Soon
                   </div>
                 )}
-
                 <h3
                   style={{
                     fontSize: "21px",
@@ -281,7 +195,6 @@ export default function Install() {
                 >
                   {item.title}
                 </h3>
-
                 <p
                   style={{
                     color: "var(--text-muted)",
@@ -322,12 +235,8 @@ export default function Install() {
                 fontFamily: "var(--font-sans)",
                 transition: "opacity 0.2s ease",
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.opacity = "0.85";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.opacity = "1";
-              }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
             >
               View on npm ↗
             </a>
@@ -347,13 +256,8 @@ export default function Install() {
                 fontFamily: "var(--font-sans)",
                 transition: "0.2s ease",
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "var(--text)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color =
-                  "var(--text-secondary)";
-              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
             >
               GitHub ↗
             </a>
@@ -361,15 +265,12 @@ export default function Install() {
         </div>
       </section>
 
-      {/* DRAWER */}
+      {/* DRAWER OVERLAY */}
       <div
         style={{
           position: "fixed",
           inset: 0,
-          background:
-            activeInstall
-              ? "rgba(0,0,0,0.45)"
-              : "transparent",
+          background: activeInstall ? "rgba(0,0,0,0.45)" : "transparent",
           pointerEvents: activeInstall ? "all" : "none",
           transition: "0.25s ease",
           zIndex: 999,
@@ -383,8 +284,7 @@ export default function Install() {
             left: 0,
             right: 0,
             bottom: activeInstall ? "0px" : "-100%",
-            transition:
-              "0.35s cubic-bezier(0.22,1,0.36,1)",
+            transition: "0.35s cubic-bezier(0.22,1,0.36,1)",
             background: "var(--bg-card)",
             borderTop: "1px solid var(--border-strong)",
             borderTopLeftRadius: "32px",
@@ -397,13 +297,7 @@ export default function Install() {
           {installOptions
             .filter((item) => item.id === activeInstall)
             .map((item) => (
-              <div
-                key={item.id}
-                style={{
-                  maxWidth: "920px",
-                  margin: "0 auto",
-                }}
-              >
+              <div key={item.id} style={{ maxWidth: "920px", margin: "0 auto" }}>
                 <div
                   style={{
                     width: "70px",
@@ -413,7 +307,6 @@ export default function Install() {
                     margin: "0 auto 32px",
                   }}
                 />
-
                 <h2
                   style={{
                     fontSize: "2rem",
@@ -425,7 +318,6 @@ export default function Install() {
                 >
                   {item.title} setup
                 </h2>
-
                 <p
                   style={{
                     color: "var(--text-muted)",
@@ -436,14 +328,7 @@ export default function Install() {
                 >
                   {item.subtitle}
                 </p>
-
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "20px",
-                  }}
-                >
+                <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                   {item.commands.map((cmd, i) => (
                     <div key={i}>
                       <p
@@ -459,7 +344,6 @@ export default function Install() {
                       >
                         {i + 1}. {cmd.label}
                       </p>
-
                       <div
                         style={{
                           display: "flex",
@@ -475,22 +359,8 @@ export default function Install() {
                           lineHeight: "1.7",
                         }}
                       >
-                        <span
-                          style={{
-                            color: "var(--text-muted)",
-                            marginTop: "1px",
-                          }}
-                        >
-                          $
-                        </span>
-
-                        <span
-                          style={{
-                            color: "var(--text)",
-                            wordBreak: "break-word",
-                            whiteSpace: "pre-wrap",
-                          }}
-                        >
+                        <span style={{ color: "var(--text-muted)", marginTop: "1px" }}>$</span>
+                        <span style={{ color: "var(--text)", wordBreak: "break-word", whiteSpace: "pre-wrap" }}>
                           {cmd.code}
                         </span>
                       </div>
