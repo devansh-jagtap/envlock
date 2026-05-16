@@ -71,7 +71,7 @@ export default function HowItWorks() {
               transition: "border-color 0.2s, transform 0.2s",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border-strong)";
+              (e.currentTarget as HTMLDivElement).style.borderColor = "#22d3a5";
               (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)";
             }}
             onMouseLeave={(e) => {

@@ -1,65 +1,506 @@
 "use client";
 
-const commands = [
-  { label: "Install SDK + CLI", code: "npm install keydrop && npm install -g keydrop-cli" },
-  { label: "Push your secrets", code: "keydrop push" },
-  { label: "Add to your app", code: 'await import("keydrop/init");' },
-  { label: "Deploy with one key", code: "KEYDROP_KEY=proj_xxx  ← set this in Vercel/Railway" },
+import { useState } from "react";
+
+const installOptions = [
+  {
+    id: "node",
+    title: "Node.js",
+    subtitle: "Express, Fastify, Hono",
+    icon: "/icons/nodedotjs.svg",
+
+    commands: [
+      {
+        label: "Install SDK + CLI",
+        code: "npm install keydrop@latest && npm install -g keydrop-cli",
+      },
+
+      {
+        label: "Push your secrets",
+        code: "keydrop push",
+      },
+
+      {
+        label: "Initialize Keydrop",
+        code: 'import { init } from "keydrop";',
+      },
+
+      {
+        label: "Start runtime",
+        code: "await init();",
+      },
+
+      {
+        label: "If top-level await is unsupported",
+        code:
+          '(async () => { await init(); const app = express(); app.listen(3000); })();',
+      },
+
+      {
+        label: "Deploy anywhere",
+        code: "KEYDROP_KEY=proj_x82js8sh",
+      },
+    ],
+  },
+
+  {
+    id: "next",
+    title: "Next.js",
+    subtitle: "App Router + instrumentation hook",
+    icon: "/icons/nextdotjs.svg",
+
+    commands: [
+      {
+        label: "Install SDK + CLI",
+        code: "npm install keydrop@latest && npm install -g keydrop-cli",
+      },
+
+      {
+        label: "Push your secrets",
+        code: "keydrop push",
+      },
+
+      {
+        label: "Create instrumentation.ts",
+        code: "project-root/instrumentation.ts",
+      },
+
+      {
+        label: "Initialize Keydrop",
+        code:
+          'export async function register() { const { init } = await import("keydrop"); await init(); }',
+      },
+
+      {
+        label: "Enable instrumentation hook if needed",
+        code:
+          'module.exports = { experimental: { instrumentationHook: true } }',
+      },
+
+      {
+        label: "Deploy anywhere",
+        code: "KEYDROP_KEY=proj_x82js8sh",
+      },
+    ],
+  },
+
+  {
+    id: "coming-soon",
+    title: "Coming soon",
+    subtitle: "More frameworks and deployment guides are on the way.",
+    commands: [],
+  },
 ];
 
 export default function Install() {
+  const [activeInstall, setActiveInstall] = useState<string | null>(null);
+
   return (
-    <section id="install" style={{ padding: "0 24px 120px", maxWidth: "900px", margin: "0 auto" }}>
-      <div style={{
-        borderRadius: "24px", padding: "56px",
-        background: "var(--bg-card)",
-        border: "1px solid var(--border-strong)",
-      }}>
-        <p style={{ fontSize: "11px", fontWeight: "500", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--accent)", marginBottom: "16px", fontFamily: "var(--font-sans)" }}>
-          Get started
-        </p>
-        <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)", fontWeight: "700", letterSpacing: "-0.04em", lineHeight: "1.1", marginBottom: "48px", fontFamily: "var(--font-sans)", color: "var(--text)" }}>
-          Up and running
-          <br />
-          <span style={{ color: "var(--text-muted)" }}>in minutes.</span>
-        </h2>
+    <>
+      <section
+        id="install"
+        style={{
+          padding: "0 24px 96px",
+          maxWidth: "1260px",
+          margin: "0 auto",
+        }}
+      >
+        <div
+          style={{
+            borderRadius: "34px",
+            padding: "52px 32px 44px",
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.015))",
+            border: "1px solid rgba(255,255,255,0.08)",
+            boxShadow: "0 18px 80px rgba(0,0,0,0.35)",
+          }}
+        >
+          {/* HEADING */}
+          <div
+            style={{
+              textAlign: "center",
+              marginBottom: "56px",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "11px",
+                fontWeight: "500",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: "var(--accent)",
+                marginBottom: "14px",
+                fontFamily: "var(--font-sans)",
+              }}
+            >
+              Get started
+            </p>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "48px" }}>
-          {commands.map((cmd, i) => (
-            <div key={i}>
-              <p style={{ fontSize: "10px", fontWeight: "500", letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "8px", fontFamily: "var(--font-sans)" }}>
-                {i + 1}. {cmd.label}
-              </p>
-              <div style={{
-                display: "flex", alignItems: "center", gap: "12px",
-                padding: "12px 18px", borderRadius: "10px",
-                background: "var(--bg-secondary)", border: "1px solid var(--border)",
-                fontFamily: "var(--font-mono)", fontSize: "13px",
-              }}>
-                <span style={{ color: "var(--text-muted)" }}>$</span>
-                <span style={{ color: "var(--text)" }}>{cmd.code}</span>
-              </div>
-            </div>
-          ))}
+            <h2
+              style={{
+                fontSize: "clamp(2rem, 5vw, 3.25rem)",
+                fontWeight: "700",
+                letterSpacing: "-0.05em",
+                lineHeight: "1.05",
+                fontFamily: "var(--font-sans)",
+                color: "var(--text)",
+              }}
+            >
+              Up and running
+              <br />
+              <span style={{ color: "var(--text-muted)" }}>
+                in minutes.
+              </span>
+            </h2>
+          </div>
+
+          {/* INSTALL CARDS */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns:
+                "repeat(auto-fit,minmax(250px, 1fr))",
+              justifyContent: "center",
+              gap: "18px",
+            }}
+          >
+            {installOptions.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                disabled={item.id === "coming-soon"}
+                onClick={() => {
+                  if (item.id !== "coming-soon") {
+                    setActiveInstall(item.id);
+                  }
+                }}
+                style={{
+                  background:
+                    item.id === "coming-soon"
+                      ? "linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))"
+                      : "linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02))",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  borderRadius: "30px",
+                  padding: "28px 24px",
+                  cursor: "pointer",
+                  textAlign: "center",
+                  transition:
+                    "transform 0.25s ease, border 0.25s ease, background 0.25s ease",
+                  minHeight: "224px",
+                  opacity: item.id === "coming-soon" ? 0.82 : 1,
+                  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)",
+
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onMouseEnter={(e) => {
+                  if (item.id === "coming-soon") {
+                    return;
+                  }
+                  e.currentTarget.style.border =
+                    "1px solid rgba(255,255,255,0.14)";
+                  e.currentTarget.style.transform =
+                    "translateY(-4px)";
+                  e.currentTarget.style.background =
+                    "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.028))";
+                }}
+                onMouseLeave={(e) => {
+                  if (item.id === "coming-soon") {
+                    return;
+                  }
+                  e.currentTarget.style.border =
+                    "1px solid rgba(255,255,255,0.06)";
+                  e.currentTarget.style.transform =
+                    "translateY(0px)";
+                  e.currentTarget.style.background =
+                    item.id === "coming-soon"
+                      ? "linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))"
+                      : "linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02))";
+                }}
+              >
+                {item.icon ? (
+                  <div
+                    style={{
+                      width: "84px",
+                      height: "84px",
+                      borderRadius: "26px",
+                      background: "#ffffff",
+                      border: "1px solid rgba(0,0,0,0.08)",
+                      boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginBottom: "22px",
+                      transition: "transform 0.25s ease",
+                    }}
+                  >
+                    <img
+                      src={item.icon}
+                      alt={item.title}
+                      style={{
+                        width: "44px",
+                        height: "44px",
+                        objectFit: "contain",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      width: "84px",
+                      height: "84px",
+                      borderRadius: "26px",
+                      background: "rgba(255,255,255,0.03)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginBottom: "22px",
+                      color: "var(--text-muted)",
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "12px",
+                      fontWeight: "600",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Soon
+                  </div>
+                )}
+
+                <h3
+                  style={{
+                    fontSize: "21px",
+                    fontWeight: "600",
+                    marginBottom: "10px",
+                    color: "var(--text)",
+                    fontFamily: "var(--font-sans)",
+                  }}
+                >
+                  {item.title}
+                </h3>
+
+                <p
+                  style={{
+                    color: "var(--text-muted)",
+                    fontSize: "14px",
+                    lineHeight: "1.7",
+                    fontFamily: "var(--font-sans)",
+                    maxWidth: "220px",
+                  }}
+                >
+                  {item.subtitle}
+                </p>
+              </button>
+            ))}
+          </div>
+
+          {/* BUTTONS */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "12px",
+              flexWrap: "wrap",
+              marginTop: "56px",
+            }}
+          >
+            <a
+              href="https://www.npmjs.com/package/keydrop"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: "12px 26px",
+                borderRadius: "9999px",
+                fontSize: "14px",
+                fontWeight: "600",
+                background: "var(--accent)",
+                color: "#080808",
+                textDecoration: "none",
+                fontFamily: "var(--font-sans)",
+                transition: "opacity 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = "0.85";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = "1";
+              }}
+            >
+              View on npm ↗
+            </a>
+
+            <a
+              href="https://github.com/devansh-jagtap/keydrop"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: "12px 26px",
+                borderRadius: "9999px",
+                fontSize: "14px",
+                fontWeight: "500",
+                border: "1px solid var(--border-strong)",
+                color: "var(--text-secondary)",
+                textDecoration: "none",
+                fontFamily: "var(--font-sans)",
+                transition: "0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "var(--text)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color =
+                  "var(--text-secondary)";
+              }}
+            >
+              GitHub ↗
+            </a>
+          </div>
         </div>
+      </section>
 
-        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-          <a href="https://www.npmjs.com/package/keydrop" target="_blank" rel="noopener noreferrer"
-            style={{ padding: "11px 24px", borderRadius: "9999px", fontSize: "14px", fontWeight: "600", background: "var(--accent)", color: "#080808", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "opacity 0.2s" }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-          >
-            View on npm ↗
-          </a>
-          <a href="https://github.com/devansh-jagtap/keydrop" target="_blank" rel="noopener noreferrer"
-            style={{ padding: "11px 24px", borderRadius: "9999px", fontSize: "14px", fontWeight: "500", border: "1px solid var(--border-strong)", color: "var(--text-secondary)", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "color 0.2s" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
-          >
-            GitHub ↗
-          </a>
+      {/* DRAWER */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          background:
+            activeInstall
+              ? "rgba(0,0,0,0.45)"
+              : "transparent",
+          pointerEvents: activeInstall ? "all" : "none",
+          transition: "0.25s ease",
+          zIndex: 999,
+        }}
+        onClick={() => setActiveInstall(null)}
+      >
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: activeInstall ? "0px" : "-100%",
+            transition:
+              "0.35s cubic-bezier(0.22,1,0.36,1)",
+            background: "var(--bg-card)",
+            borderTop: "1px solid var(--border-strong)",
+            borderTopLeftRadius: "32px",
+            borderTopRightRadius: "32px",
+            padding: "42px 24px",
+            maxHeight: "85vh",
+            overflowY: "auto",
+          }}
+        >
+          {installOptions
+            .filter((item) => item.id === activeInstall)
+            .map((item) => (
+              <div
+                key={item.id}
+                style={{
+                  maxWidth: "920px",
+                  margin: "0 auto",
+                }}
+              >
+                <div
+                  style={{
+                    width: "70px",
+                    height: "6px",
+                    borderRadius: "999px",
+                    background: "var(--border)",
+                    margin: "0 auto 32px",
+                  }}
+                />
+
+                <h2
+                  style={{
+                    fontSize: "2rem",
+                    marginBottom: "10px",
+                    color: "var(--text)",
+                    fontFamily: "var(--font-sans)",
+                    textAlign: "center",
+                  }}
+                >
+                  {item.title} setup
+                </h2>
+
+                <p
+                  style={{
+                    color: "var(--text-muted)",
+                    marginBottom: "40px",
+                    fontFamily: "var(--font-sans)",
+                    textAlign: "center",
+                  }}
+                >
+                  {item.subtitle}
+                </p>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "20px",
+                  }}
+                >
+                  {item.commands.map((cmd, i) => (
+                    <div key={i}>
+                      <p
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: "500",
+                          letterSpacing: "0.14em",
+                          textTransform: "uppercase",
+                          color: "var(--text-muted)",
+                          marginBottom: "10px",
+                          fontFamily: "var(--font-sans)",
+                        }}
+                      >
+                        {i + 1}. {cmd.label}
+                      </p>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          gap: "12px",
+                          padding: "16px 18px",
+                          borderRadius: "16px",
+                          background: "var(--bg-secondary)",
+                          border: "1px solid var(--border)",
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "14px",
+                          overflowX: "auto",
+                          lineHeight: "1.7",
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: "var(--text-muted)",
+                            marginTop: "1px",
+                          }}
+                        >
+                          $
+                        </span>
+
+                        <span
+                          style={{
+                            color: "var(--text)",
+                            wordBreak: "break-word",
+                            whiteSpace: "pre-wrap",
+                          }}
+                        >
+                          {cmd.code}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
         </div>
       </div>
-    </section>
+    </>
   );
 }
