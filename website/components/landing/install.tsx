@@ -9,12 +9,12 @@ const installOptions = [
     subtitle: "Express, Fastify, Hono",
     icon: "/icons/nodedotjs.svg",
     commands: [
-      { label: "Install SDK + CLI", code: "npm install keydrop@latest && npm install -g keydrop-cli" },
-      { label: "Push your secrets", code: "keydrop push" },
-      { label: "Initialize Keydrop", code: 'import { init } from "keydrop";' },
+      { label: "Install SDK + CLI", code: "npm install enlock@latest && npm install -g enlock-cli" },
+      { label: "Push your secrets", code: "enlock push" },
+      { label: "Initialize Enlock", code: 'import { init } from "enlock";' },
       { label: "Start runtime", code: "await init();" },
       { label: "If top-level await is unsupported", code: "(async () => { await init(); const app = express(); app.listen(3000); })();" },
-      { label: "Deploy anywhere", code: "KEYDROP_KEY=proj_x82js8sh" },
+      { label: "Deploy anywhere", code: "ENLOCK_KEY=proj_x82js8sh" },
     ],
   },
   {
@@ -23,12 +23,12 @@ const installOptions = [
     subtitle: "App Router + instrumentation hook",
     icon: "/icons/nextdotjs.svg",
     commands: [
-      { label: "Install SDK + CLI", code: "npm install keydrop@latest && npm install -g keydrop-cli" },
-      { label: "Push your secrets", code: "keydrop push" },
+      { label: "Install SDK + CLI", code: "npm install enlock@latest && npm install -g enlock-cli" },
+      { label: "Push your secrets", code: "enlock push" },
       { label: "Create instrumentation.ts", code: "project-root/instrumentation.ts" },
-      { label: "Initialize Keydrop", code: 'export async function register() { const { init } = await import("keydrop"); await init(); }' },
+      { label: "Initialize Enlock", code: 'export async function register() { const { init } = await import("enlock"); await init(); }' },
       { label: "Enable instrumentation hook if needed", code: "module.exports = { experimental: { instrumentationHook: true } }" },
-      { label: "Deploy anywhere", code: "KEYDROP_KEY=proj_x82js8sh" },
+      { label: "Deploy anywhere", code: "ENLOCK_KEY=proj_x82js8sh" },
     ],
   },
   {
@@ -41,6 +41,7 @@ const installOptions = [
 
 export default function Install() {
   const [activeInstall, setActiveInstall] = useState<string | null>(null);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   return (
     <>
@@ -221,7 +222,7 @@ export default function Install() {
             }}
           >
             <a
-              href="https://www.npmjs.com/package/keydrop"
+              href="https://www.npmjs.com/package/enlock"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -242,7 +243,7 @@ export default function Install() {
             </a>
 
             <a
-              href="https://github.com/devansh-jagtap/keydrop"
+              href="https://github.com/devansh-jagtap/enlock"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -347,7 +348,8 @@ export default function Install() {
                       <div
                         style={{
                           display: "flex",
-                          alignItems: "flex-start",
+                          alignItems: "center",
+                          justifyContent: "space-between",
                           gap: "12px",
                           padding: "16px 18px",
                           borderRadius: "16px",
@@ -355,14 +357,52 @@ export default function Install() {
                           border: "1px solid var(--border)",
                           fontFamily: "var(--font-mono)",
                           fontSize: "14px",
-                          overflowX: "auto",
                           lineHeight: "1.7",
                         }}
                       >
-                        <span style={{ color: "var(--text-muted)", marginTop: "1px" }}>$</span>
-                        <span style={{ color: "var(--text)", wordBreak: "break-word", whiteSpace: "pre-wrap" }}>
-                          {cmd.code}
-                        </span>
+                        <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", overflowX: "auto" }}>
+                          <span style={{ color: "var(--text-muted)", marginTop: "1px" }}>$</span>
+                          <span style={{ color: "var(--text)", wordBreak: "break-word", whiteSpace: "pre-wrap" }}>
+                            {cmd.code}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(cmd.code);
+                            setCopiedIndex(i);
+                            setTimeout(() => setCopiedIndex(null), 2000);
+                          }}
+                          style={{
+                            background: "transparent",
+                            border: "none",
+                            cursor: "pointer",
+                            color: copiedIndex === i ? "var(--accent)" : "var(--text-muted)",
+                            padding: "4px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            transition: "color 0.2s",
+                            flexShrink: 0,
+                          }}
+                          title="Copy command"
+                          onMouseEnter={(e) => {
+                            if (copiedIndex !== i) e.currentTarget.style.color = "var(--text)";
+                          }}
+                          onMouseLeave={(e) => {
+                            if (copiedIndex !== i) e.currentTarget.style.color = "var(--text-muted)";
+                          }}
+                        >
+                          {copiedIndex === i ? (
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                          ) : (
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                          )}
+                        </button>
                       </div>
                     </div>
                   ))}
