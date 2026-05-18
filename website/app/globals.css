@@ -42,9 +42,11 @@ body {
 ::-webkit-scrollbar {
   width: 3px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--bg);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--border-strong);
   border-radius: 2px;
@@ -55,6 +57,7 @@ body {
     opacity: 0;
     transform: translateY(24px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -62,10 +65,12 @@ body {
 }
 
 @keyframes blink {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0;
   }
@@ -79,18 +84,23 @@ body {
 .delay-1 {
   animation-delay: 0.05s;
 }
+
 .delay-2 {
   animation-delay: 0.15s;
 }
+
 .delay-3 {
   animation-delay: 0.25s;
 }
+
 .delay-4 {
   animation-delay: 0.35s;
 }
+
 .delay-5 {
   animation-delay: 0.45s;
 }
+
 .delay-6 {
   animation-delay: 0.55s;
 }

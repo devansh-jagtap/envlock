@@ -72,4 +72,12 @@ router.get("/secrets", async (req, res) => {
   return res.json({ secrets });
 });
 
+
+router.post("/auth/register",async(req,res)=>{
+
+})
+router.post("/auth/login",async(req,res)=>{
+
+})
+
 export default router;
