@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ThemeToggleShell } from "@/components/theme-toggle-shell";
+import { ThemeToggleShell } from "@/components/ui/theme-toggle-shell";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);

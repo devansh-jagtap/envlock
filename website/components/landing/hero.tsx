@@ -1,7 +1,7 @@
 "use client";
 
 import { RandomizedTextEffect } from "@/components/ui/randomized-text";
-import TextAnimation from "@/components/uilayouts/scroll-text";
+import TextAnimation from "@/components/ui/scroll-text";
 import SmoothWavyCanvas from "@/components/ui/background";
 import ButtonCreative from "@/components/ui/button-creative";
 
