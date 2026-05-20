@@ -13,6 +13,10 @@ function setDocumentTheme(theme: Theme) {
 export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof document === "undefined") return "dark";
+    try {
+      const savedTheme = localStorage.getItem(THEME_KEY);
+      if (savedTheme === "light" || savedTheme === "dark") return savedTheme;
+    } catch {}
     return document.documentElement.classList.contains("dark") ? "dark" : "light";
   });
 

@@ -71,7 +71,7 @@ export default function Navbar() {
           <ThemeToggleShell />
           <Link
             href="/dashboard"
-            style={{ fontSize: "13px", fontWeight: "600", padding: "7px 18px", borderRadius: "9999px", background: "var(--accent)", color: "#080808", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "opacity 0.2s" }}
+            style={{ fontSize: "13px", fontWeight: "600", padding: "7px 18px", borderRadius: "9999px", background: "var(--accent)", color: "var(--accent-text)", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "opacity 0.2s" }}
             onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
