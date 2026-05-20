@@ -25,6 +25,7 @@ const SmoothWavyCanvas = ({
   const mouseRef = useRef({ x: 0, y: 0, isDown: false })
   const energyFields = useRef<Array<{ x: number; y: number; time: number; intensity: number }>>([])
   const resolveCssColor = useCallback((color: string) => {
+    if (typeof document === "undefined") return color
     const match = color.match(/^var\((--[^)]+)\)$/)
     if (!match) return color
     return getComputedStyle(document.documentElement).getPropertyValue(match[1]).trim() || color
