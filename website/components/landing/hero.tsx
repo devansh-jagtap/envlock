@@ -20,7 +20,7 @@ export default function Hero() {
       }}
     >
       <SmoothWavyCanvas
-        backgroundColor="#080808"
+        backgroundColor="var(--bg-canvas)"
         primaryColor="34, 211, 165"
         secondaryColor="20, 160, 120"
         accentColor="34, 211, 165"

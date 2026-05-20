@@ -23,7 +23,7 @@ export default function Footer() {
             width={32}
             height={32}
             unoptimized
-            style={{ borderRadius: "6px", filter: "invert(1)", transform: "scale(2.0)" }}
+            style={{ borderRadius: "6px", filter: "var(--logo-filter)", transform: "scale(2.0)" }}
           />
           <span style={{ fontSize: "13px", fontWeight: "600", color: "var(--text-secondary)", fontFamily: "var(--font-sans)" }}>
             KeyDrop

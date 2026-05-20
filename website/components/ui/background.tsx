@@ -24,6 +24,12 @@ const SmoothWavyCanvas = ({
   const timeRef = useRef<number>(0)
   const mouseRef = useRef({ x: 0, y: 0, isDown: false })
   const energyFields = useRef<Array<{ x: number; y: number; time: number; intensity: number }>>([])
+  const resolveCssColor = useCallback((color: string) => {
+    if (typeof document === "undefined") return color
+    const match = color.match(/^var\((--[^)]+)\)$/)
+    if (!match) return color
+    return getComputedStyle(document.documentElement).getPropertyValue(match[1]).trim() || color
+  }, [])
 
   const getMouseInfluence = (x: number, y: number): number => {
     const dx = x - mouseRef.current.x
@@ -110,7 +116,7 @@ const SmoothWavyCanvas = ({
     const height = canvas.height
 
     // Clear with clean background
-    ctx.fillStyle = backgroundColor
+    ctx.fillStyle = resolveCssColor(backgroundColor)
     ctx.fillRect(0, 0, width, height)
 
     // Primary horizontal flowing lines
@@ -240,7 +246,7 @@ const SmoothWavyCanvas = ({
     // No energy field effects - removed completely
 
     requestIdRef.current = requestAnimationFrame(animate)
-  }, [backgroundColor, primaryColor, secondaryColor, accentColor, lineOpacity, animationSpeed])
+  }, [backgroundColor, primaryColor, secondaryColor, accentColor, lineOpacity, animationSpeed, resolveCssColor])
 
   useEffect(() => {
     const canvas = canvasRef.current
