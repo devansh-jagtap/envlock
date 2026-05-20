@@ -44,7 +44,7 @@ export function ThemeToggle() {
       onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
       onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
     >
-      {theme === "dark" ? "☀ Light" : "🌙 Dark"}
+      {theme === "dark" ? "☀ Switch to Light" : "🌙 Switch to Dark"}
     </button>
   );
 }
