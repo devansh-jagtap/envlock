@@ -4,5 +4,4 @@ node_modules/
 *.log
 test.js
 test-*.js
-mock-server.js
 .DS_Store

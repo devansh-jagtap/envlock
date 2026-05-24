@@ -1,7 +1,7 @@
 {
   "name": "keydrop-cli",
-  "version": "1.0.6",
-  "description": "Turn your .env into one deployable key",
+  "version": "1.0.0",
+  "description": "Turn your .env into one deployable key - CLI tool",
   "type": "module",
   "bin": {
     "keydrop": "bin/envlock.js"
@@ -9,6 +9,30 @@
   "scripts": {
     "start": "node bin/envlock.js"
   },
+  "keywords": [
+    "env",
+    "environment",
+    "secrets",
+    "dotenv",
+    "cli",
+    "keydrop"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devansh-jagtap/keydrop.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/devansh-jagtap/keydrop/issues"
+  },
+  "homepage": "https://github.com/devansh-jagtap/keydrop#readme",
+  "files": [
+    "bin/",
+    "src/",
+    "README.md"
+  ],
   "dependencies": {
     "axios": "^1.6.0",
     "commander": "^12.0.0",
