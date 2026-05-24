@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import secretsRouter from "./routes/secrets.js";
@@ -13,6 +14,8 @@ app.use("/", secretsRouter);
 app.get("/health", (_, res) => res.json({ status: "ok" }));
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`KeyDrop API running on http://localhost:${PORT}`);
+const HOST = "0.0.0.0";
+
+app.listen(PORT, HOST, () => {
+  console.log(`KeyDrop API running on ${HOST}:${PORT}`);
 });
