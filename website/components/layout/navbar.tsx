@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ThemeToggleShell } from "@/components/ui/theme-toggle-shell";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -22,13 +23,13 @@ export default function Navbar() {
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "32px",
-          padding: "10px 20px",
-          borderRadius: "9999px",
-          background: scrolled ? "rgba(8,8,8,0.92)" : "rgba(17,17,17,0.7)",
-          border: "1px solid var(--border-strong)",
-          backdropFilter: "blur(20px)",
-          transition: "all 0.4s ease",
+           gap: "32px",
+           padding: "10px 20px",
+           borderRadius: "9999px",
+           background: scrolled ? "var(--nav-bg-scrolled)" : "var(--nav-bg)",
+           border: "1px solid var(--border-strong)",
+           backdropFilter: "blur(20px)",
+           transition: "all 0.4s ease",
           boxShadow: scrolled ? "0 8px 40px rgba(0,0,0,0.5)" : "none",
         }}
       >
@@ -39,7 +40,7 @@ export default function Navbar() {
             width={36}
             height={36}
             unoptimized
-            style={{ borderRadius: "6px", filter: "invert(1)", transform: "scale(2.0)" }}
+            style={{ borderRadius: "6px", filter: "var(--logo-filter)", transform: "scale(2.0)" }}
           />
           <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--text)", fontFamily: "var(--font-sans)" }}>
             KeyDrop
@@ -66,14 +67,17 @@ export default function Navbar() {
           ))}
         </div>
 
-        <Link
-          href="/dashboard"
-          style={{ fontSize: "13px", fontWeight: "600", padding: "7px 18px", borderRadius: "9999px", background: "var(--accent)", color: "#080808", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "opacity 0.2s" }}
-          onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
-          onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-        >
-          Dashboard
-        </Link>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <ThemeToggleShell />
+          <Link
+            href="/dashboard"
+            style={{ fontSize: "13px", fontWeight: "600", padding: "7px 18px", borderRadius: "9999px", background: "var(--accent)", color: "var(--accent-text)", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "opacity 0.2s" }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+          >
+            Dashboard
+          </Link>
+        </div>
       </div>
     </nav>
   );

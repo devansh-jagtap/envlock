@@ -4,12 +4,29 @@ import dotenv from "dotenv";
 import axios from "axios";
 
 const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-production-d38c.up.railway.app";
+const CONFIG_PATH = path.join(process.env.HOME || process.env.USERPROFILE, ".keydrop", "config.json");
+
+function getAuthToken() {
+  try {
+    if (fs.existsSync(CONFIG_PATH)) {
+      const config = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf-8"));
+      return config.token;
+    }
+  } catch {}
+  return null;
+}
 
 export async function pushCommand() {
+  const token = getAuthToken();
+  if (!token) {
+    console.error("❌ Not logged in. Run: keydrop login");
+    process.exit(1);
+  }
+
   const envPath = path.resolve(process.cwd(), ".env");
 
   if (!fs.existsSync(envPath)) {
-    console.error(" No .env file found in current directory.");
+    console.error("❌ No .env file found in current directory.");
     process.exit(1);
   }
 
@@ -17,19 +34,16 @@ export async function pushCommand() {
   const parsed = dotenv.parse(raw);
 
   if (Object.keys(parsed).length === 0) {
-    console.error(" .env file is empty or invalid.");
+    console.error("❌ .env file is empty or invalid.");
     process.exit(1);
   }
 
-  // check if KEYDROP_KEY already exists
   const existingKey = parsed.KEYDROP_KEY;
-
-  // remove KEYDROP_KEY from secrets before uploading
   const secrets = { ...parsed };
   delete secrets.KEYDROP_KEY;
 
   if (Object.keys(secrets).length === 0) {
-    console.error(" No secrets found only KEYDROP_KEY exists in .env.");
+    console.error("❌ No secrets found, only KEYDROP_KEY exists in .env.");
     process.exit(1);
   }
 
@@ -39,26 +53,26 @@ export async function pushCommand() {
 
   try {
     if (existingKey) {
-      // UPDATE existing project
-      const res = await axios.put(`${API_URL}/upload`, { secrets }, {
-        headers: { Authorization: `Bearer ${existingKey}` },
-      });
-      projectKey = res.data.projectKey;
-      fs.writeFileSync(envPath, `KEYDROP_KEY=${projectKey}\n`, "utf-8"); // ✅ rewrite
-      console.log(` Secrets updated! Your .env is now:`);
-      console.log(`\n   KEYDROP_KEY=${projectKey}\n`);
-      console.log(`Your secrets have been updated in the vault.`);
-    } else {
-      // CREATE new project
-      const res = await axios.post(`${API_URL}/upload`, { secrets });
+      const res = await axios.put(`${API_URL}/upload`, 
+        { secrets, projectKey: existingKey },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       projectKey = res.data.projectKey;
       fs.writeFileSync(envPath, `KEYDROP_KEY=${projectKey}\n`, "utf-8");
-      console.log(` Done! Your .env is now:`);
+      console.log(`✅ Secrets updated! Your .env is now:`);
       console.log(`\n   KEYDROP_KEY=${projectKey}\n`);
-      console.log(`Deploy with just this key. Your app will work normally.`);
+    } else {
+      const res = await axios.post(`${API_URL}/upload`, 
+        { secrets },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      projectKey = res.data.projectKey;
+      fs.writeFileSync(envPath, `KEYDROP_KEY=${projectKey}\n`, "utf-8");
+      console.log(`✅ Done! Your .env is now:`);
+      console.log(`\n   KEYDROP_KEY=${projectKey}\n`);
     }
   } catch (err) {
-    console.error(" Failed:", err.response?.data?.message || err.message);
+    console.error("❌ Failed:", err.response?.data?.message || err.message);
     process.exit(1);
   }
 }

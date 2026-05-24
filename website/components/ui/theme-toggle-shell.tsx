@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-const ThemeToggle = dynamic(() => import("@/components/theme-toggle").then((mod) => mod.ThemeToggle), {
+const ThemeToggle = dynamic(() => import("@/components/ui/theme-toggle").then((mod) => mod.ThemeToggle), {
   ssr: false,
 });
 

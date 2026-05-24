@@ -5,6 +5,28 @@
 }
 
 :root {
+  --bg: #f7f8fa;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --border: rgba(15, 23, 42, 0.12);
+  --border-strong: rgba(15, 23, 42, 0.2);
+  --text: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --accent: #22d3a5;
+  --accent-text: #080808;
+  --accent-dim: rgba(34, 211, 165, 0.15);
+  --accent-glow: rgba(34, 211, 165, 0.2);
+  --bg-canvas: #f7f8fa;
+  --nav-bg: rgba(255, 255, 255, 0.75);
+  --nav-bg-scrolled: rgba(255, 255, 255, 0.92);
+  --logo-filter: none;
+  --font-sans: "Space Grotesk", sans-serif;
+  --font-mono: var(--font-inconsolata);
+  --font-mono-custom: var(--font-inconsolata);
+}
+
+.dark {
   --bg: #080808;
   --bg-secondary: #101010;
   --bg-card: #111111;
@@ -14,11 +36,13 @@
   --text-secondary: #888;
   --text-muted: #444;
   --accent: #22d3a5;
+  --accent-text: #080808;
   --accent-dim: rgba(34, 211, 165, 0.07);
   --accent-glow: rgba(34, 211, 165, 0.12);
-  --font-sans: "Space Grotesk", sans-serif;
-  --font-mono: var(--font-inconsolata);
-  --font-mono-custom: var(--font-inconsolata);
+  --bg-canvas: #080808;
+  --nav-bg: rgba(17, 17, 17, 0.7);
+  --nav-bg-scrolled: rgba(8, 8, 8, 0.92);
+  --logo-filter: invert(1);
 }
 
 * {

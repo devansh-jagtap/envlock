@@ -7,32 +7,35 @@ import { generateToken, authMiddleware } from "../lib/auth.js";
 
 const router = Router();
 
-
-// POST /upload — receive secrets, encrypt, store, return key
-router.post("/upload", async (req, res) => {
-  const { secrets } = req.body;
+// POST /upload — requires auth, creates project linked to user
+router.post("/upload", authMiddleware, async (req, res) => {
+  const { secrets, name } = req.body;
 
   if (!secrets || typeof secrets !== "object") {
     return res.status(400).json({ message: "Invalid secrets payload" });
   }
 
- const projectKey = "proj_" + crypto.randomBytes(24).toString("hex");
+  const projectKey = "proj_" + crypto.randomBytes(24).toString("hex");
   const encryptedData = encrypt(JSON.stringify(secrets));
 
   await prisma.project.create({
-    data: { projectKey, encryptedData },
+    data: {
+      projectKey,
+      encryptedData,
+      name: name || "Untitled Project",
+      userId: req.userId,
+    },
   });
 
   return res.json({ projectKey });
 });
-// PUT /upload — update existing project secrets
-router.put("/upload", async (req, res) => {
-  const { secrets } = req.body;
-  const authHeader = req.headers["authorization"];
-  const projectKey = authHeader?.replace("Bearer ", "");
+
+// PUT /upload — requires auth, updates existing project
+router.put("/upload", authMiddleware, async (req, res) => {
+  const { secrets, projectKey } = req.body;
 
   if (!projectKey) {
-    return res.status(401).json({ message: "Missing KEYDROP_KEY" });
+    return res.status(400).json({ message: "projectKey required" });
   }
 
   if (!secrets || typeof secrets !== "object") {
@@ -45,8 +48,11 @@ router.put("/upload", async (req, res) => {
     return res.status(404).json({ message: "Project not found" });
   }
 
-  const encryptedData = encrypt(JSON.stringify(secrets));
+  if (project.userId !== req.userId) {
+    return res.status(403).json({ message: "Not your project" });
+  }
 
+  const encryptedData = encrypt(JSON.stringify(secrets));
   await prisma.project.update({
     where: { projectKey },
     data: { encryptedData },
@@ -55,13 +61,13 @@ router.put("/upload", async (req, res) => {
   return res.json({ projectKey });
 });
 
-// GET /secrets — SDK fetches secrets using ENVLOCK_KEY
+// GET /secrets — public, SDK uses this (no auth required for runtime)
 router.get("/secrets", async (req, res) => {
   const authHeader = req.headers["authorization"];
   const projectKey = authHeader?.replace("Bearer ", "");
 
   if (!projectKey) {
-    return res.status(401).json({ message: "Missing ENVLOCK_KEY" });
+    return res.status(401).json({ message: "Missing KEYDROP_KEY" });
   }
 
   const project = await prisma.project.findUnique({ where: { projectKey } });
@@ -74,7 +80,42 @@ router.get("/secrets", async (req, res) => {
   return res.json({ secrets });
 });
 
+// GET /projects — requires auth, returns user's projects
+router.get("/projects", authMiddleware, async (req, res) => {
+  const projects = await prisma.project.findMany({
+    where: { userId: req.userId },
+    select: {
+      id: true,
+      projectKey: true,
+      name: true,
+      createdAt: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
 
+  return res.json({ projects });
+});
+
+// DELETE /project/:key — requires auth, deletes project
+router.delete("/project/:key", authMiddleware, async (req, res) => {
+  const { key } = req.params;
+
+  const project = await prisma.project.findUnique({ where: { projectKey: key } });
+
+  if (!project) {
+    return res.status(404).json({ message: "Project not found" });
+  }
+
+  if (project.userId !== req.userId) {
+    return res.status(403).json({ message: "Not your project" });
+  }
+
+  await prisma.project.delete({ where: { projectKey: key } });
+
+  return res.json({ success: true });
+});
+
+// POST /auth/register
 router.post("/auth/register", async (req, res) => {
   const { email, password } = req.body;
 
@@ -100,6 +141,7 @@ router.post("/auth/register", async (req, res) => {
   return res.json({ token, userId: user.id, email: user.email });
 });
 
+// POST /auth/login
 router.post("/auth/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -120,6 +162,5 @@ router.post("/auth/login", async (req, res) => {
   const token = generateToken(user.id);
   return res.json({ token, userId: user.id, email: user.email });
 });
-
 
 export default router;

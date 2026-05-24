@@ -2,11 +2,22 @@
 import { program } from "commander";
 import { pushCommand } from "../src/commands/push.js";
 import { pullCommand } from "../src/commands/pull.js";
+import { loginCommand, registerCommand } from "../src/commands/auth.js";
 
 program
   .name("keydrop")
   .description("Turn your .env into one deployable key")
   .version("1.0.0");
+
+program
+  .command("login")
+  .description("Login to your KeyDrop account")
+  .action(loginCommand);
+
+program
+  .command("register")
+  .description("Create a new KeyDrop account")
+  .action(registerCommand);
 
 program
   .command("push")
