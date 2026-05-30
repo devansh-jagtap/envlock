@@ -3,7 +3,7 @@ import path from "path";
 import axios from "axios";
 import readline from "readline";
 
-const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-production-d38c.up.railway.app";
+const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-1wzo.onrender.com";
 const CONFIG_DIR = path.join(process.env.HOME || process.env.USERPROFILE, ".keydrop");
 const CONFIG_PATH = path.join(CONFIG_DIR, "config.json");
 

@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import axios from "axios";
 
-const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-production-d38c.up.railway.app"; 
+const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-1wzo.onrender.com"; 
 
 export async function pullCommand(options) {
   const envPath = path.resolve(process.cwd(), ".env");

@@ -256,7 +256,7 @@ KEYDROP_KEY=proj_x82js8sh
 Deploy to:
 
 * Vercel
-* Railway
+* Render
 * Render
 * Docker
 * AWS

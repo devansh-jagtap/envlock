@@ -3,7 +3,7 @@ import path from "path";
 import dotenv from "dotenv";
 import axios from "axios";
 
-const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-production-d38c.up.railway.app";
+const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-1wzo.onrender.com";
 const CONFIG_PATH = path.join(process.env.HOME || process.env.USERPROFILE, ".keydrop", "config.json");
 
 function getAuthToken() {

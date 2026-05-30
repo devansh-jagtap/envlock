@@ -52,7 +52,7 @@ const token = jwt.sign(payload, process.env.JWT_SECRET);
 | `KEYDROP_KEY`     | Required | Your project key from `keydrop push` |
 | `KEYDROP_API_URL` | Optional | Custom API URL for self hosting      |
 
-## Vercel / Railway / Render
+## Vercel / Render
 
 Just add `KEYDROP_KEY` to your platform's environment variables dashboard. No `.env` file needed — the platform injects it directly.
 

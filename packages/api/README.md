@@ -11,11 +11,11 @@
 
 ## Routes
 
-| Method | Path | Description |
-|--------|------|-------------|
-| `POST` | `/upload` | Receive secrets, encrypt, store, return key |
-| `GET` | `/secrets` | Fetch secrets using KEYDROP_KEY |
-| `GET` | `/health` | Health check |
+| Method | Path       | Description                                 |
+| ------ | ---------- | ------------------------------------------- |
+| `POST` | `/upload`  | Receive secrets, encrypt, store, return key |
+| `GET`  | `/secrets` | Fetch secrets using KEYDROP_KEY             |
+| `GET`  | `/health`  | Health check                                |
 
 ## Setup
 
@@ -51,7 +51,7 @@ npm run dev
 
 ## Deployment
 
-Deploy to Railway, Render, or any Node.js host.
+Deploy to Render or any Node.js host.
 
 Set these environment variables on your platform:
 DATABASE_URL=your_neon_connection_string

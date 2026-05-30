@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: keydrop-api
+    env: node
+    rootDir: packages/api
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true

@@ -2,7 +2,7 @@
 
 const API_URL =
   process.env.KEYDROP_API_URL ||
-  "https://keydrop-production-d38c.up.railway.app";
+  "https://keydrop-1wzo.onrender.com";
 
 let _promise = null;
 

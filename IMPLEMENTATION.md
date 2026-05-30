@@ -3,13 +3,16 @@
 ## ✅ What Was Implemented
 
 ### 1. **User Authentication**
+
 - Register: `POST /auth/register`
 - Login: `POST /auth/login`
 - JWT tokens (30-day expiry)
 - Password hashing with bcrypt
 
 ### 2. **Protected Routes**
+
 All project operations now require authentication:
+
 - `POST /upload` - Create project (requires auth)
 - `PUT /upload` - Update project (requires auth + ownership check)
 - `GET /projects` - List user's projects (requires auth)
@@ -17,17 +20,20 @@ All project operations now require authentication:
 - `GET /secrets` - Fetch secrets (public, for SDK runtime)
 
 ### 3. **User-Project Linking**
+
 - Projects are now owned by users
 - Users can only see/modify their own projects
 - Database schema updated with `userId` foreign key
 
 ### 4. **CLI Authentication**
+
 - `keydrop register` - Create account
 - `keydrop login` - Login and save token
 - `keydrop push` - Now requires login
 - Token stored in `~/.keydrop/config.json`
 
 ### 5. **Dashboard**
+
 - Login page
 - View all projects
 - Delete projects
@@ -38,6 +44,7 @@ All project operations now require authentication:
 ## 🧪 Testing
 
 ### Test API Endpoints
+
 ```bash
 # Terminal 1 - Start API
 cd packages/api
@@ -48,6 +55,7 @@ node packages/api/test-full.js
 ```
 
 ### Test CLI
+
 ```bash
 # Register
 keydrop register
@@ -60,6 +68,7 @@ keydrop push
 ```
 
 ### Test Dashboard
+
 ```bash
 cd website
 npm run dev
@@ -71,12 +80,14 @@ npm run dev
 ## 📁 Files Created/Modified
 
 ### Created:
+
 - `packages/api/src/lib/auth.js` - JWT auth utilities
 - `packages/cli/src/commands/auth.js` - CLI login/register
 - `packages/api/test-full.js` - Comprehensive tests
 - `website/app/dashboard/page.tsx` - User dashboard
 
 ### Modified:
+
 - `packages/api/src/routes/secrets.js` - Added auth to all routes
 - `packages/api/prisma/schema.prisma` - Added createdAt to Project
 - `packages/cli/src/commands/push.js` - Added auth token
@@ -108,16 +119,19 @@ npm run dev
 ## 🚀 API Endpoints
 
 ### Auth
+
 - `POST /auth/register` - Create account
 - `POST /auth/login` - Login
 
 ### Projects (Authenticated)
+
 - `POST /upload` - Create project
 - `PUT /upload` - Update project
 - `GET /projects` - List user's projects
 - `DELETE /project/:key` - Delete project
 
 ### Runtime (Public)
+
 - `GET /secrets` - Fetch secrets (uses projectKey)
 
 ---
@@ -125,6 +139,7 @@ npm run dev
 ## 📝 Environment Variables
 
 ### API (`packages/api/.env`)
+
 ```env
 DATABASE_URL=postgresql://...
 ENCRYPTION_KEY=64_hex_characters
@@ -133,6 +148,7 @@ PORT=3001
 ```
 
 ### Website (`website/.env.local`)
+
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:3001
 ```
@@ -161,6 +177,7 @@ None currently - all tests passing!
 ## 📖 Usage Flow
 
 1. **Register/Login**
+
    ```bash
    keydrop register
    # or
@@ -168,6 +185,7 @@ None currently - all tests passing!
    ```
 
 2. **Push Secrets**
+
    ```bash
    keydrop push
    ```

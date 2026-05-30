@@ -1,179 +1,149 @@
-// "use client";
+"use client";
 
-import { div } from "framer-motion/client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { getProjects, deleteProject, getToken, clearToken } from "@/lib/api";
 
-// import { useState, useEffect } from "react";
+interface Project {
+  id: string;
+  projectKey: string;
+  name: string;
+  createdAt: string;
+}
 
-// const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+export default function Dashboard() {
+  const router = useRouter();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState<string | null>(null);
 
-// export default function Dashboard() {
-//   const [projects, setProjects] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [token, setToken] = useState("");
+  useEffect(() => {
+    const token = getToken();
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+    fetchProjects();
+  }, []);
 
-//   useEffect(() => {
-//     const savedToken = localStorage.getItem("keydrop_token");
-//     if (savedToken) {
-//       setToken(savedToken);
-//       fetchProjects(savedToken);
-//     } else {
-//       setLoading(false);
-//     }
-//   }, []);
+  async function fetchProjects() {
+    try {
+      const data = await getProjects();
+      setProjects(data.projects || []);
+    } catch {
+      router.push("/login");
+    } finally {
+      setLoading(false);
+    }
+  }
 
-//   async function fetchProjects(authToken: string) {
-//     try {
-//       const res = await fetch(`${API_URL}/projects`, {
-//         headers: { Authorization: `Bearer ${authToken}` },
-//       });
-//       const data = await res.json();
-//       setProjects(data.projects || []);
-//     } catch (err) {
-//       console.error("Failed to fetch projects:", err);
-//     } finally {
-//       setLoading(false);
-//     }
-//   }
+  async function handleDelete(projectKey: string) {
+    if (!confirm("Delete this project? This cannot be undone.")) return;
+    try {
+      await deleteProject(projectKey);
+      setProjects((prev) => prev.filter((p) => p.projectKey !== projectKey));
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Delete failed");
+    }
+  }
 
-//   async function handleLogin(e) {
-//     e.preventDefault();
-//     const email = e.target.email.value;
-//     const password = e.target.password.value;
+  function copyKey(key: string) {
+    navigator.clipboard.writeText(key);
+    setCopied(key);
+    setTimeout(() => setCopied(null), 2000);
+  }
 
-//     try {
-//       const res = await fetch(`${API_URL}/auth/login`, {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ email, password }),
-//       });
-//       const data = await res.json();
-      
-//       if (data.token) {
-//         localStorage.setItem("keydrop_token", data.token);
-//         setToken(data.token);
-//         fetchProjects(data.token);
-//       }
-//     } catch (err) {
-//       alert("Login failed: " + err.message);
-//     }
-//   }
+  function logout() {
+    clearToken();
+    router.push("/login");
+  }
 
-//   async function deleteProject(projectKey) {
-//     if (!confirm("Delete this project?")) return;
-
-//     try {
-//       await fetch(`${API_URL}/project/${projectKey}`, {
-//         method: "DELETE",
-//         headers: { Authorization: `Bearer ${token}` },
-//       });
-//       fetchProjects(token);
-//     } catch (err) {
-//       alert("Delete failed: " + err.message);
-//     }
-//   }
-
-//   function logout() {
-//     localStorage.removeItem("keydrop_token");
-//     setToken("");
-//     setProjects([]);
-//   }
-
-//   if (loading) {
-//     return <div className="p-8">Loading...</div>;
-//   }
-
-//   if (!token) {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-//         <div className="bg-white p-8 rounded-lg shadow-md w-96">
-//           <h1 className="text-2xl font-bold mb-6">KeyDrop Login</h1>
-//           <form onSubmit={handleLogin} className="space-y-4">
-//             <input
-//               name="email"
-//               type="email"
-//               placeholder="Email"
-//               required
-//               className="w-full px-4 py-2 border rounded"
-//             />
-//             <input
-//               name="password"
-//               type="password"
-//               placeholder="Password"
-//               required
-//               className="w-full px-4 py-2 border rounded"
-//             />
-//             <button
-//               type="submit"
-//               className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-//             >
-//               Login
-//             </button>
-//           </form>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 p-8">
-//       <div className="max-w-4xl mx-auto">
-//         <div className="flex justify-between items-center mb-8">
-//           <h1 className="text-3xl font-bold">Your Projects</h1>
-//           <button
-//             onClick={logout}
-//             className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-//           >
-//             Logout
-//           </button>
-//         </div>
-
-//         {projects.length === 0 ? (
-//           <div className="bg-white p-8 rounded-lg shadow text-center">
-//             <p className="text-gray-600 mb-4">No projects yet</p>
-//             <p className="text-sm text-gray-500">
-//               Run <code className="bg-gray-100 px-2 py-1 rounded">keydrop push</code> to create your first project
-//             </p>
-//           </div>
-//         ) : (
-//           <div className="space-y-4">
-//             {projects.map((project) => (
-//               <div
-//                 key={project.id}
-//                 className="bg-white p-6 rounded-lg shadow hover:shadow-md transition"
-//               >
-//                 <div className="flex justify-between items-start">
-//                   <div>
-//                     <h3 className="font-semibold text-lg">{project.name || "Untitled"}</h3>
-//                     <code className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded mt-2 inline-block">
-//                       {project.projectKey}
-//                     </code>
-//                     <p className="text-xs text-gray-400 mt-2">
-//                       Created: {new Date(project.createdAt).toLocaleDateString()}
-//                     </p>
-//                   </div>
-//                   <button
-//                     onClick={() => deleteProject(project.projectKey)}
-//                     className="text-red-600 hover:text-red-800 text-sm"
-//                   >
-//                     Delete
-//                   </button>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-export default function dashboard(){
+  if (loading) {
+    return (
+      <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)" }}>
+        <p style={{ color: "var(--text-secondary)", fontFamily: "var(--font-sans)" }}>Loading...</p>
+      </main>
+    );
+  }
 
   return (
-    <div>
-      DashBoard
-    </div>
-  )
+    <main style={{ minHeight: "100vh", background: "var(--bg)", padding: "80px 24px 48px" }}>
+      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+
+        {/* header */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "40px" }}>
+          <div>
+            <Link href="/" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
+              <div style={{ width: "24px", height: "24px", borderRadius: "6px", background: "var(--accent)", color: "#080808", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: "700" }}>K</div>
+              <span style={{ fontSize: "13px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)" }}>KeyDrop</span>
+            </Link>
+            <h1 style={{ fontSize: "28px", fontWeight: "700", color: "var(--text)", fontFamily: "var(--font-sans)", letterSpacing: "-0.03em" }}>Your Projects</h1>
+            <p style={{ fontSize: "14px", color: "var(--text-secondary)", marginTop: "4px", fontFamily: "var(--font-sans)" }}>
+              {projects.length} project{projects.length !== 1 ? "s" : ""}
+            </p>
+          </div>
+          <button onClick={logout}
+            style={{ padding: "8px 16px", borderRadius: "9999px", border: "1px solid var(--border-strong)", background: "transparent", color: "var(--text-secondary)", fontSize: "13px", cursor: "pointer", fontFamily: "var(--font-sans)" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+          >
+            Logout
+          </button>
+        </div>
+
+        {/* empty state */}
+        {projects.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "80px 24px", borderRadius: "20px", border: "1px dashed var(--border-strong)", background: "var(--bg-card)" }}>
+            <div style={{ fontSize: "40px", marginBottom: "16px" }}>🔐</div>
+            <p style={{ fontSize: "18px", fontWeight: "600", color: "var(--text)", marginBottom: "8px", fontFamily: "var(--font-sans)" }}>No projects yet</p>
+            <p style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "24px", fontFamily: "var(--font-sans)" }}>Run <code style={{ fontFamily: "var(--font-mono)", background: "var(--bg-secondary)", padding: "2px 8px", borderRadius: "6px", fontSize: "13px" }}>keydrop push</code> to create your first project</p>
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            {projects.map((project) => (
+              <div key={project.id}
+                style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: "16px", padding: "20px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", transition: "border-color 0.2s" }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLDivElement).style.borderColor = "var(--border-strong)")}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLDivElement).style.borderColor = "var(--border)")}
+              >
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ fontSize: "15px", fontWeight: "600", color: "var(--text)", marginBottom: "6px", fontFamily: "var(--font-sans)" }}>
+                    {project.name || "Untitled Project"}
+                  </p>
+                  <code style={{ fontSize: "12px", color: "var(--text-muted)", fontFamily: "var(--font-mono)", background: "var(--bg-secondary)", padding: "3px 8px", borderRadius: "6px", display: "inline-block", maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {project.projectKey}
+                  </code>
+                  <p style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "6px", fontFamily: "var(--font-sans)" }}>
+                    Created {new Date(project.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+
+                <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
+                  <button onClick={() => copyKey(project.projectKey)}
+                    style={{ padding: "7px 14px", borderRadius: "9999px", border: "1px solid var(--border-strong)", background: "transparent", color: copied === project.projectKey ? "var(--accent)" : "var(--text-secondary)", fontSize: "12px", cursor: "pointer", fontFamily: "var(--font-sans)", transition: "all 0.2s" }}>
+                    {copied === project.projectKey ? "Copied!" : "Copy key"}
+                  </button>
+                  <Link href={`/dashboard/${project.projectKey}`}
+                    style={{ padding: "7px 14px", borderRadius: "9999px", border: "1px solid var(--border-strong)", background: "transparent", color: "var(--text-secondary)", fontSize: "12px", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "color 0.2s" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+                  >
+                    View secrets
+                  </Link>
+                  <button onClick={() => handleDelete(project.projectKey)}
+                    style={{ padding: "7px 14px", borderRadius: "9999px", border: "1px solid rgba(239,68,68,0.2)", background: "transparent", color: "rgba(239,68,68,0.6)", fontSize: "12px", cursor: "pointer", fontFamily: "var(--font-sans)", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#ef4444"; e.currentTarget.style.borderColor = "rgba(239,68,68,0.4)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(239,68,68,0.6)"; e.currentTarget.style.borderColor = "rgba(239,68,68,0.2)"; }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </main>
+  );
 }
