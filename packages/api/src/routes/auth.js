@@ -16,7 +16,7 @@ const authLimiter = rateLimit({
 });
 
 // POST /auth/register
-router.post("/auth/register", authLimiter, async (req, res) => {
+router.post("/register", authLimiter, async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -38,7 +38,7 @@ router.post("/auth/register", authLimiter, async (req, res) => {
 });
 
 // POST /auth/login
-router.post("/auth/login", authLimiter, async (req, res) => {
+router.post("/login", authLimiter, async (req, res) => {
   const { email, password } = req.body;
 
   const user = await prisma.user.findUnique({ where: { email } });
@@ -56,7 +56,7 @@ router.post("/auth/login", authLimiter, async (req, res) => {
 });
 
 // POST /auth/cli/init — CLI calls this to start browser login
-router.post("/auth/cli/init", authLimiter, async (req, res) => {
+router.post("/cli/init", authLimiter, async (req, res) => {
   const token = crypto.randomBytes(16).toString("hex");
 
   await prisma.cliToken.create({ data: { token } });
@@ -65,7 +65,7 @@ router.post("/auth/cli/init", authLimiter, async (req, res) => {
 });
 
 // GET /auth/cli/poll — CLI polls this waiting for JWT
-router.get("/auth/cli/poll", authLimiter, async (req, res) => {
+router.get("/cli/poll", authLimiter, async (req, res) => {
   const { token } = req.query;
 
   if (!token) {
@@ -89,7 +89,7 @@ router.get("/auth/cli/poll", authLimiter, async (req, res) => {
 });
 
 // POST /auth/cli/confirm — website calls this after user logs in
-router.post("/auth/cli/confirm", authLimiter, async (req, res) => {
+router.post("/cli/confirm", authLimiter, async (req, res) => {
   const { token, jwt: jwtValue } = req.body;
 
   if (!token || !jwtValue) {

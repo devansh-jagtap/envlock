@@ -3,7 +3,10 @@ import path from "path";
 import axios from "axios";
 import readline from "readline";
 
-const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-1wzo.onrender.com";
+// const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-1wzo.onrender.com";
+const API_URL =
+  process.env.KEYDROP_API_URL ||
+  "http://localhost:3001";
 const CONFIG_DIR = path.join(process.env.HOME || process.env.USERPROFILE, ".keydrop");
 const CONFIG_PATH = path.join(CONFIG_DIR, "config.json");
 
