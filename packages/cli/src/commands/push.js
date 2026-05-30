@@ -19,14 +19,14 @@ function getAuthToken() {
 export async function pushCommand() {
   const token = getAuthToken();
   if (!token) {
-    console.error("❌ Not logged in. Run: keydrop login");
+    console.error("Not logged in. Run: keydrop login");
     process.exit(1);
   }
 
   const envPath = path.resolve(process.cwd(), ".env");
 
   if (!fs.existsSync(envPath)) {
-    console.error("❌ No .env file found in current directory.");
+    console.error("No .env file found in current directory.");
     process.exit(1);
   }
 
@@ -34,7 +34,7 @@ export async function pushCommand() {
   const parsed = dotenv.parse(raw);
 
   if (Object.keys(parsed).length === 0) {
-    console.error("❌ .env file is empty or invalid.");
+    console.error(" .env file is empty or invalid.");
     process.exit(1);
   }
 
@@ -43,7 +43,7 @@ export async function pushCommand() {
   delete secrets.KEYDROP_KEY;
 
   if (Object.keys(secrets).length === 0) {
-    console.error("❌ No secrets found, only KEYDROP_KEY exists in .env.");
+    console.error(" No secrets found, only KEYDROP_KEY exists in .env.");
     process.exit(1);
   }
 
@@ -59,7 +59,7 @@ export async function pushCommand() {
       );
       projectKey = res.data.projectKey;
       fs.writeFileSync(envPath, `KEYDROP_KEY=${projectKey}\n`, "utf-8");
-      console.log(`✅ Secrets updated! Your .env is now:`);
+      console.log(`Secrets updated! Your .env is now:`);
       console.log(`\n   KEYDROP_KEY=${projectKey}\n`);
     } else {
       const res = await axios.post(`${API_URL}/upload`, 
@@ -68,11 +68,11 @@ export async function pushCommand() {
       );
       projectKey = res.data.projectKey;
       fs.writeFileSync(envPath, `KEYDROP_KEY=${projectKey}\n`, "utf-8");
-      console.log(`✅ Done! Your .env is now:`);
+      console.log(`Done! Your .env is now:`);
       console.log(`\n   KEYDROP_KEY=${projectKey}\n`);
     }
   } catch (err) {
-    console.error("❌ Failed:", err.response?.data?.message || err.message);
+    console.error("Failed:", err.response?.data?.message || err.message);
     process.exit(1);
   }
 }

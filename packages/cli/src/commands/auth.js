@@ -22,7 +22,7 @@ function prompt(question) {
 }
 
 export async function loginCommand() {
-  console.log("🔐 KeyDrop Login\n");
+  console.log("KeyDrop Login\n");
 
   const email = await prompt("Email: ");
   const password = await prompt("Password: ");
@@ -37,15 +37,15 @@ export async function loginCommand() {
 
     fs.writeFileSync(CONFIG_PATH, JSON.stringify({ token, email }, null, 2));
 
-    console.log("\n✅ Logged in successfully!");
+    console.log("\n Logged in successfully!");
   } catch (err) {
-    console.error("\n❌ Login failed:", err.response?.data?.message || err.message);
+    console.error("\n Login failed:", err.response?.data?.message || err.message);
     process.exit(1);
   }
 }
 
 export async function registerCommand() {
-  console.log("📝 KeyDrop Register\n");
+  console.log(" KeyDrop Register\n");
 
   const email = await prompt("Email: ");
   const password = await prompt("Password (min 6 chars): ");
@@ -60,9 +60,9 @@ export async function registerCommand() {
 
     fs.writeFileSync(CONFIG_PATH, JSON.stringify({ token, email }, null, 2));
 
-    console.log("\n✅ Account created and logged in!");
+    console.log("\nAccount created and logged in!");
   } catch (err) {
-    console.error("\n❌ Registration failed:", err.response?.data?.message || err.message);
+    console.error("\nRegistration failed:", err.response?.data?.message || err.message);
     process.exit(1);
   }
 }

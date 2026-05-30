@@ -4,7 +4,6 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec \"node --env-file=.env src/index.js\" src/",
     "start": "node src/index.js",
     "postinstall": "prisma generate"

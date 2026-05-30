@@ -23,7 +23,7 @@ app.post("/upload", (req, res) => {
   // Store the secrets (in a real app, this would be encrypted and stored in a database)
   uploadedSecrets.set(projectKey, secrets);
 
-  console.log(`✓ Uploaded ${Object.keys(secrets).length} secret(s) with key: ${projectKey}`);
+  console.log(`Uploaded ${Object.keys(secrets).length} secret(s) with key: ${projectKey}`);
 
   res.json({ projectKey });
 });
