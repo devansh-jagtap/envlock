@@ -47,10 +47,10 @@ const token = jwt.sign(payload, process.env.JWT_SECRET);
 
 ## Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `KEYDROP_KEY` | Required | Your project key from `keydrop push` |
-| `KEYDROP_API_URL` | Optional | Custom API URL for self hosting |
+| Variable          | Required | Description                          |
+| ----------------- | -------- | ------------------------------------ |
+| `KEYDROP_KEY`     | Required | Your project key from `keydrop push` |
+| `KEYDROP_API_URL` | Optional | Custom API URL for self hosting      |
 
 ## Vercel / Railway / Render
 
