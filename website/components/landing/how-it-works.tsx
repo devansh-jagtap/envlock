@@ -5,20 +5,20 @@ import { useEffect, useRef, useState } from "react";
 const steps = [
   {
     number: "01",
-    command: "npm install keydrop && npm install -g keydrop-cli",
+    commands: ["npm install keydrop", "npm install -g keydrop-cli"],
     title: "Install",
     description: "Add the SDK and CLI to your project. One time setup.",
   },
   {
     number: "02",
-    command: "keydrop push",
+    commands: ["keydrop push"],
     title: "Push",
     description:
       "Your .env gets encrypted with AES-256 and stored securely. You get one key back.",
   },
   {
     number: "03",
-    command: 'await import("keydrop/init")',
+    commands: ['await import("keydrop/init")'],
     title: "Deploy",
     description:
       "Add one line to your app. Deploy with only KEYDROP_KEY. Everything works.",
@@ -27,7 +27,7 @@ const steps = [
 
 export default function HowItWorks() {
   const [isVisible, setIsVisible] = useState(false);
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -126,58 +126,72 @@ export default function HowItWorks() {
             </span>
             <div
               style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "12px",
-                padding: "12px",
-                borderRadius: "10px",
-                background: "rgba(255,255,255,0.02)",
-                border: "1px solid var(--border)",
-                color: "var(--accent)",
-                wordBreak: "break-all",
-                minHeight: "56px",
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: "12px",
+                flexDirection: "column",
+                gap: "8px",
               }}
             >
-              <div>$ {step.command}</div>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(step.command);
-                  setCopiedIndex(i);
-                  setTimeout(() => setCopiedIndex(null), 2000);
-                }}
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  cursor: "pointer",
-                  color: copiedIndex === i ? "var(--accent)" : "var(--text-muted)",
-                  padding: "4px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  transition: "color 0.2s",
-                }}
-                title="Copy command"
-                onMouseEnter={(e) => {
-                  if (copiedIndex !== i) e.currentTarget.style.color = "var(--text)";
-                }}
-                onMouseLeave={(e) => {
-                  if (copiedIndex !== i) e.currentTarget.style.color = "var(--text-muted)";
-                }}
-              >
-                {copiedIndex === i ? (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                ) : (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                  </svg>
-                )}
-              </button>
+              {step.commands.map((command, commandIndex) => {
+                const key = `${i}-${commandIndex}`;
+                return (
+                  <div
+                    key={key}
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "12px",
+                      padding: "12px",
+                      borderRadius: "10px",
+                      background: "rgba(255,255,255,0.02)",
+                      border: "1px solid var(--border)",
+                      color: "var(--accent)",
+                      wordBreak: "break-all",
+                      minHeight: "56px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "12px",
+                    }}
+                  >
+                    <div>$ {command}</div>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(command);
+                        setCopiedKey(key);
+                        setTimeout(() => setCopiedKey(null), 2000);
+                      }}
+                      style={{
+                        background: "transparent",
+                        border: "none",
+                        cursor: "pointer",
+                        color: copiedKey === key ? "var(--accent)" : "var(--text-muted)",
+                        padding: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition: "color 0.2s",
+                      }}
+                      title="Copy command"
+                      onMouseEnter={(e) => {
+                        if (copiedKey !== key) e.currentTarget.style.color = "var(--text)";
+                      }}
+                      onMouseLeave={(e) => {
+                        if (copiedKey !== key) e.currentTarget.style.color = "var(--text-muted)";
+                      }}
+                    >
+                      {copiedKey === key ? (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      ) : (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+                );
+              })}
             </div>
             <div style={{ marginTop: "auto" }}>
               <p

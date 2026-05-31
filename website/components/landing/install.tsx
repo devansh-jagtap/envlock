@@ -9,12 +9,13 @@ const installOptions = [
     subtitle: "Express, Fastify, Hono",
     icon: "/icons/nodedotjs.svg",
     commands: [
-      { label: "Install SDK + CLI", code: "npm install enlock@latest && npm install -g enlock-cli" },
-      { label: "Push your secrets", code: "enlock push" },
-      { label: "Initialize Enlock", code: 'import { init } from "enlock";' },
-      { label: "Start runtime", code: "await init();" },
+      { label: "Install SDK + CLI", code: "npm install keydrop@latest && npm install -g keydrop-cli@latest" },
+      { label: "Login once from CLI", code: "keydrop login" },
+      { label: "Push your secrets", code: "keydrop push" },
+      { label: "Initialize KeyDrop SDK", code: 'import { init } from "keydrop";' },
+      { label: "Load secrets at startup", code: "await init();" },
       { label: "If top-level await is unsupported", code: "(async () => { await init(); const app = express(); app.listen(3000); })();" },
-      { label: "Deploy anywhere", code: "ENLOCK_KEY=proj_x82js8sh" },
+      { label: "Deploy anywhere", code: "KEYDROP_KEY=proj_x82js8sh" },
     ],
   },
   {
@@ -23,12 +24,13 @@ const installOptions = [
     subtitle: "App Router + instrumentation hook",
     icon: "/icons/nextdotjs.svg",
     commands: [
-      { label: "Install SDK + CLI", code: "npm install enlock@latest && npm install -g enlock-cli" },
-      { label: "Push your secrets", code: "enlock push" },
+      { label: "Install SDK + CLI", code: "npm install keydrop@latest && npm install -g keydrop-cli@latest" },
+      { label: "Login once from CLI", code: "keydrop login" },
+      { label: "Push your secrets", code: "keydrop push" },
       { label: "Create instrumentation.ts", code: "project-root/instrumentation.ts" },
-      { label: "Initialize Enlock", code: 'export async function register() { const { init } = await import("enlock"); await init(); }' },
-      { label: "Enable instrumentation hook if needed", code: "module.exports = { experimental: { instrumentationHook: true } }" },
-      { label: "Deploy anywhere", code: "ENLOCK_KEY=proj_x82js8sh" },
+      { label: "Initialize KeyDrop SDK", code: 'export async function register() { const { init } = await import("keydrop"); await init(); }' },
+      { label: "Enable instrumentation hook if needed", code: "export default { experimental: { instrumentationHook: true } }" },
+      { label: "Deploy anywhere", code: "KEYDROP_KEY=proj_x82js8sh" },
     ],
   },
   {
@@ -222,7 +224,7 @@ export default function Install() {
             }}
           >
             <a
-              href="https://www.npmjs.com/package/enlock"
+              href="https://www.npmjs.com/package/keydrop"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -243,7 +245,7 @@ export default function Install() {
             </a>
 
             <a
-              href="https://github.com/devansh-jagtap/enlock"
+              href="https://github.com/devansh-jagtap/keydrop"
               target="_blank"
               rel="noopener noreferrer"
               style={{
