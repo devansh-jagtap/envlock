@@ -83,13 +83,23 @@ export default function Dashboard() {
               {projects.length} project{projects.length !== 1 ? "s" : ""}
             </p>
           </div>
-          <button onClick={logout}
-            style={{ padding: "8px 16px", borderRadius: "9999px", border: "1px solid var(--border-strong)", background: "transparent", color: "var(--text-secondary)", fontSize: "13px", cursor: "pointer", fontFamily: "var(--font-sans)" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
-          >
-            Logout
-          </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <Link
+              href="/"
+              style={{ padding: "8px 16px", borderRadius: "9999px", border: "1px solid var(--border-strong)", background: "transparent", color: "var(--text-secondary)", fontSize: "13px", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "color 0.2s" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+            >
+              Back to home
+            </Link>
+            <button onClick={logout}
+              style={{ padding: "8px 16px", borderRadius: "9999px", border: "1px solid var(--border-strong)", background: "transparent", color: "var(--text-secondary)", fontSize: "13px", cursor: "pointer", fontFamily: "var(--font-sans)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+            >
+              Logout
+            </button>
+          </div>
         </div>
 
         {/* empty state */}
