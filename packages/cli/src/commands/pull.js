@@ -2,14 +2,30 @@ import fs from "fs";
 import path from "path";
 import axios from "axios";
 
-const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-1wzo.onrender.com"; 
+const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-1wzo.onrender.com";
+const CONFIG_PATH = path.join(process.env.HOME || process.env.USERPROFILE, ".keydrop", "config.json");
 
-export async function pullCommand(options) {
+function getAuthToken() {
+  try {
+    if (fs.existsSync(CONFIG_PATH)) {
+      const config = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf-8"));
+      return config.token;
+    }
+  } catch {}
+  return null;
+}
+
+export async function pullCommand() {
+  const token = getAuthToken();
+  if (!token) {
+    console.error(" Not logged in. Run: keydrop login");
+    process.exit(1);
+  }
+
   const envPath = path.resolve(process.cwd(), ".env");
 
-  // 1. Read current .env to get KEYDROP_KEY
   if (!fs.existsSync(envPath)) {
-    console.error("No .env file found in current directory.");
+    console.error(" No .env file found in current directory.");
     process.exit(1);
   }
 
@@ -18,15 +34,12 @@ export async function pullCommand(options) {
 
   if (!keyMatch || !keyMatch[1]) {
     console.error(" No KEYDROP_KEY found in .env file.");
-    console.error("   Use: keydrop pull <KEYDROP_KEY>");
     process.exit(1);
   }
 
   const projectKey = keyMatch[1].trim();
-
   console.log(` Retrieving secrets for key: ${projectKey}...`);
 
-  // 2. Fetch secrets from backend
   let secrets;
   try {
     const res = await axios.get(`${API_URL}/secrets`, {
@@ -34,22 +47,17 @@ export async function pullCommand(options) {
     });
     secrets = res.data.secrets;
   } catch (err) {
-    console.error(
-      " Failed to retrieve secrets:",
-      err.response?.data?.message || err.message
-    );
+    console.error(" Failed:", err.response?.data?.message || err.message);
     process.exit(1);
   }
 
- // 3. Reconstruct .env file — always keep KEYDROP_KEY at top
-let envContent = `KEYDROP_KEY=${projectKey}\n`;
-for (const [key, value] of Object.entries(secrets)) {
-  envContent += `${key}=${value}\n`;
-}
+  let envContent = `KEYDROP_KEY=${projectKey}\n`;
+  for (const [key, value] of Object.entries(secrets)) {
+    envContent += `${key}=${value}\n`;
+  }
 
-fs.writeFileSync(envPath, envContent, "utf-8");
-
-console.log(`Secrets restored! Your .env now contains:`);
-console.log(`\n${Object.keys(secrets).join(", ")}\n`);
-console.log(`KEYDROP_KEY has been kept in your .env file.`);
+  fs.writeFileSync(envPath, envContent, "utf-8");
+  console.log(` Secrets restored! Your .env now contains:`);
+  console.log(`\n${Object.keys(secrets).join(", ")}\n`);
+  console.log(`KEYDROP_KEY has been kept in your .env file.`);
 }
