@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
 import axios from "axios";
+import readline from "readline";
 
 const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-1wzo.onrender.com";
 const CONFIG_PATH = path.join(process.env.HOME || process.env.USERPROFILE, ".keydrop", "config.json");
@@ -14,6 +15,11 @@ function getAuthToken() {
     }
   } catch {}
   return null;
+}
+
+function prompt(question) {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  return new Promise((resolve) => rl.question(question, (a) => { rl.close(); resolve(a); }));
 }
 
 export async function pushCommand() {
@@ -34,7 +40,7 @@ export async function pushCommand() {
   const parsed = dotenv.parse(raw);
 
   if (Object.keys(parsed).length === 0) {
-    console.error(" .env file is empty or invalid.");
+    console.error(".env file is empty or invalid.");
     process.exit(1);
   }
 
@@ -43,7 +49,7 @@ export async function pushCommand() {
   delete secrets.KEYDROP_KEY;
 
   if (Object.keys(secrets).length === 0) {
-    console.error(" No secrets found, only KEYDROP_KEY exists in .env.");
+    console.error("No secrets found — only KEYDROP_KEY exists in .env.");
     process.exit(1);
   }
 
@@ -53,7 +59,8 @@ export async function pushCommand() {
 
   try {
     if (existingKey) {
-      const res = await axios.put(`${API_URL}/upload`, 
+      const res = await axios.put(
+        `${API_URL}/upload`,
         { secrets, projectKey: existingKey },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -62,17 +69,24 @@ export async function pushCommand() {
       console.log(`Secrets updated! Your .env is now:`);
       console.log(`\n   KEYDROP_KEY=${projectKey}\n`);
     } else {
-      const res = await axios.post(`${API_URL}/upload`, 
-        { secrets },
+      const name = await prompt("Project name (press Enter to skip): ");
+      const res = await axios.post(
+        `${API_URL}/upload`,
+        { secrets, name: name.trim() || "Untitled Project" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       projectKey = res.data.projectKey;
       fs.writeFileSync(envPath, `KEYDROP_KEY=${projectKey}\n`, "utf-8");
       console.log(`Done! Your .env is now:`);
       console.log(`\n   KEYDROP_KEY=${projectKey}\n`);
+      console.log(`Deploy with just this key. Your app will work normally.`);
     }
   } catch (err) {
-    console.error("Failed:", err.response?.data?.message || err.message);
+    if (err.response?.status === 401) {
+      console.error("Session expired. Run: keydrop login");
+    } else {
+      console.error("Failed:", err.response?.data?.message || err.message);
+    }
     process.exit(1);
   }
 }
