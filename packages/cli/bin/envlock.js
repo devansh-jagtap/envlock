@@ -2,22 +2,22 @@
 import { program } from "commander";
 import { pushCommand } from "../src/commands/push.js";
 import { pullCommand } from "../src/commands/pull.js";
-import { loginCommand, registerCommand } from "../src/commands/auth.js";
+import { loginCommand, logoutCommand } from "../src/commands/auth.js";
 
 program
   .name("keydrop")
   .description("Turn your .env into one deployable key")
-  .version("1.0.0");
+  .version("1.1.0");
 
 program
   .command("login")
-  .description("Login to your KeyDrop account")
+  .description("Login to KeyDrop")
   .action(loginCommand);
 
 program
-  .command("register")
-  .description("Create a new KeyDrop account")
-  .action(registerCommand);
+  .command("logout")
+  .description("Logout from KeyDrop")
+  .action(logoutCommand);
 
 program
   .command("push")
@@ -26,7 +26,7 @@ program
 
 program
   .command("pull")
-  .description("Retrieve .env secrets using KEYDROP_KEY")
+  .description("Restore secrets from KEYDROP_KEY")
   .action(pullCommand);
 
 program.parse();

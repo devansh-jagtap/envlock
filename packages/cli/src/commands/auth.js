@@ -1,71 +1,75 @@
 import fs from "fs";
 import path from "path";
 import axios from "axios";
-import readline from "readline";
+import { exec } from "child_process";
 
 const API_URL = process.env.KEYDROP_API_URL || "https://keydrop-1wzo.onrender.com";
-// const API_URL =
-//   process.env.KEYDROP_API_URL ||
-//   "http://localhost:3001";
+const WEBSITE_URL = process.env.KEYDROP_WEBSITE_URL || "https://keydrop-orcin.vercel.app";
 const CONFIG_DIR = path.join(process.env.HOME || process.env.USERPROFILE, ".keydrop");
 const CONFIG_PATH = path.join(CONFIG_DIR, "config.json");
 
-function prompt(question) {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  return new Promise((resolve) => {
-    rl.question(question, (answer) => {
-      rl.close();
-      resolve(answer);
-    });
+function openBrowser(url) {
+  const platform = process.platform;
+  const cmd =
+    platform === "win32" ? `start "" "${url}"` :
+    platform === "darwin" ? `open "${url}"` :
+    `xdg-open "${url}"`;
+  exec(cmd, (err) => {
+    if (err) console.log(`\nCouldn't open browser automatically. Open manually:\n${url}\n`);
   });
 }
 
 export async function loginCommand() {
-  console.log("KeyDrop Login\n");
+  console.log(" Logging in to KeyDrop...\n");
 
-  const email = await prompt("Email: ");
-  const password = await prompt("Password: ");
-
+  let cliToken;
   try {
-    const res = await axios.post(`${API_URL}/auth/login`, { email, password });
-    const { token } = res.data;
-
-    if (!fs.existsSync(CONFIG_DIR)) {
-      fs.mkdirSync(CONFIG_DIR, { recursive: true });
-    }
-
-    fs.writeFileSync(CONFIG_PATH, JSON.stringify({ token, email }, null, 2));
-
-    console.log("\n Logged in successfully!");
+    const res = await axios.post(`${API_URL}/auth/cli/init`);
+    cliToken = res.data.token;
   } catch (err) {
-    console.error("\n Login failed:", err.response?.data?.message || err.message);
+    console.error(" Failed to connect to KeyDrop API:", err.message);
     process.exit(1);
   }
+
+  const loginUrl = `${WEBSITE_URL}/auth/cli?token=${cliToken}`;
+  console.log(`Opening browser to complete login...`);
+  console.log(`\n  ${loginUrl}\n`);
+  console.log(`If browser didn't open, copy the URL above.\n`);
+  openBrowser(loginUrl);
+
+  console.log(" Waiting for you to login in the browser...");
+
+  let jwt = null;
+  let attempts = 0;
+
+  while (!jwt && attempts < 60) {
+    await new Promise((r) => setTimeout(r, 2000));
+    attempts++;
+    try {
+      const res = await axios.get(`${API_URL}/auth/cli/poll?token=${cliToken}`);
+      if (res.data.status === "authorized") {
+        jwt = res.data.jwt;
+        break;
+      }
+    } catch {}
+  }
+
+  if (!jwt) {
+    console.error(" Login timed out. Please try again.");
+    process.exit(1);
+  }
+
+  if (!fs.existsSync(CONFIG_DIR)) {
+    fs.mkdirSync(CONFIG_DIR, { recursive: true });
+  }
+  fs.writeFileSync(CONFIG_PATH, JSON.stringify({ token: jwt, loggedInAt: new Date().toISOString() }, null, 2));
+
+  console.log(`\n Logged in successfully!\n`);
 }
 
-export async function registerCommand() {
-  console.log(" KeyDrop Register\n");
-
-  const email = await prompt("Email: ");
-  const password = await prompt("Password (min 6 chars): ");
-
-  try {
-    const res = await axios.post(`${API_URL}/auth/register`, { email, password });
-    const { token } = res.data;
-
-    if (!fs.existsSync(CONFIG_DIR)) {
-      fs.mkdirSync(CONFIG_DIR, { recursive: true });
-    }
-
-    fs.writeFileSync(CONFIG_PATH, JSON.stringify({ token, email }, null, 2));
-
-    console.log("\nAccount created and logged in!");
-  } catch (err) {
-    console.error("\nRegistration failed:", err.response?.data?.message || err.message);
-    process.exit(1);
+export async function logoutCommand() {
+  if (fs.existsSync(CONFIG_PATH)) {
+    fs.unlinkSync(CONFIG_PATH);
   }
+  console.log(" Logged out successfully.");
 }
