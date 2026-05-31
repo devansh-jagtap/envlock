@@ -1,6 +1,6 @@
 {
   "name": "keydrop",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Turn your .env into one deployable key - Runtime SDK",
   "type": "module",
   "main": "./src/init.cjs",
