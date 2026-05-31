@@ -4,14 +4,25 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ThemeToggleShell } from "@/components/ui/theme-toggle-shell";
+import { getToken } from "@/lib/api";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", handler);
     return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  useEffect(() => {
+    const syncToken = () => setToken(getToken());
+
+    syncToken();
+    window.addEventListener("storage", syncToken);
+
+    return () => window.removeEventListener("storage", syncToken);
   }, []);
 
   return (
@@ -69,14 +80,41 @@ export default function Navbar() {
 
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <ThemeToggleShell />
-          <Link
-            href="/dashboard"
-            style={{ fontSize: "13px", fontWeight: "600", padding: "7px 18px", borderRadius: "9999px", background: "var(--accent)", color: "var(--accent-text)", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "opacity 0.2s" }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-          >
-            Dashboard
-          </Link>
+          {token ? (
+            <Link
+              href="/dashboard"
+              style={{ fontSize: "13px", fontWeight: "600", padding: "7px 18px", borderRadius: "9999px", background: "var(--accent)", color: "var(--accent-text)", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "opacity 0.2s" }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                style={{ fontSize: "13px", fontWeight: "500", padding: "7px 16px", borderRadius: "9999px", border: "1px solid var(--border-strong)", color: "var(--text-secondary)", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "color 0.2s, border-color 0.2s" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--text)";
+                  e.currentTarget.style.borderColor = "var(--border)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--text-secondary)";
+                  e.currentTarget.style.borderColor = "var(--border-strong)";
+                }}
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/register"
+                style={{ fontSize: "13px", fontWeight: "600", padding: "7px 18px", borderRadius: "9999px", background: "var(--accent)", color: "var(--accent-text)", textDecoration: "none", fontFamily: "var(--font-sans)", transition: "opacity 0.2s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+              >
+                Sign up
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>

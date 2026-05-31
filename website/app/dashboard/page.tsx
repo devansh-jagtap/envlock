@@ -74,10 +74,10 @@ export default function Dashboard() {
         {/* header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "40px" }}>
           <div>
-            <Link href="/" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
               <div style={{ width: "24px", height: "24px", borderRadius: "6px", background: "var(--accent)", color: "#080808", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: "700" }}>K</div>
               <span style={{ fontSize: "13px", color: "var(--text-secondary)", fontFamily: "var(--font-sans)" }}>KeyDrop</span>
-            </Link>
+            </div>
             <h1 style={{ fontSize: "28px", fontWeight: "700", color: "var(--text)", fontFamily: "var(--font-sans)", letterSpacing: "-0.03em" }}>Your Projects</h1>
             <p style={{ fontSize: "14px", color: "var(--text-secondary)", marginTop: "4px", fontFamily: "var(--font-sans)" }}>
               {projects.length} project{projects.length !== 1 ? "s" : ""}
